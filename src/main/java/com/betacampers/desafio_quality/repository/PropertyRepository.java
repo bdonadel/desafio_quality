@@ -10,8 +10,11 @@ import java.util.*;
 
 @Repository
 public class PropertyRepository implements IPropertyRepository {
-
     private Map<Long, Property> properties;
+
+    public PropertyRepository() {
+        createProperties();
+    }
 
     private void createProperties(){
         properties = new HashMap<>();
@@ -46,10 +49,14 @@ public class PropertyRepository implements IPropertyRepository {
 
     @Override
     public Property getById(long propertyId) {
-        this.createProperties();
-        if(!properties.containsKey(propertyId)){
+        if (!properties.containsKey(propertyId)){
             throw new RuntimeException("Não existe");
         }
         return properties.get(propertyId);
+    }
+
+    @Override
+    public List<Property> getAll() {
+        return new ArrayList<>(properties.values());
     }
 }

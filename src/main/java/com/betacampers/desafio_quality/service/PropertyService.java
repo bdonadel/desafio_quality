@@ -10,11 +10,10 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class PropertyService implements IPropertyService {
-
     @Autowired
     private IPropertyRepository propertyRepository;
 
@@ -42,6 +41,12 @@ public class PropertyService implements IPropertyService {
 
     @Override
     public List<RoomResponseDto> getRoomsArea(long propertyId) {
-        return null;
+        Property property = propertyRepository.getById(propertyId);
+        return property.getPropRooms().stream().map(RoomResponseDto::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Property> getAllProperties() {
+        return propertyRepository.getAll();
     }
 }
