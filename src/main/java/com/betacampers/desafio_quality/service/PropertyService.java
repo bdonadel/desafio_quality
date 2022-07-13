@@ -22,7 +22,17 @@ public class PropertyService implements IPropertyService {
 
     @Override
     public Double getPropertyArea(long propertyId) {
-        return null;
+        Property property = propertyRepository.getById(propertyId);
+
+        if (property.getPropRooms().isEmpty())
+            throw new PropertyWithoutRoomException(propertyId);
+
+        return property.getPropRooms()
+                .stream()
+                .mapToDouble(r -> {
+                    return r.getRoomLength() * r.getRoomWidth();
+                })
+                .sum();
     }
 
     @Override
