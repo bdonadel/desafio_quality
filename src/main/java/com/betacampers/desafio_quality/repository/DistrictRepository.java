@@ -10,7 +10,8 @@ import java.util.stream.Collectors;
 
 @Repository
 public class DistrictRepository implements IDistrictRepository {
-    private final Map<Long, District> districts;
+
+    private static Map<Long, District> districts;
 
     public DistrictRepository() {
         districts = new ArrayList<District>() {{

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -30,7 +29,7 @@ public class PropertyController {
         return ResponseEntity.ok(propertyService.getPropertyValue(id));
     }
 
-    @GetMapping("/{id}/largeRoom")
+    @GetMapping("/{id}/largest-room")
     public ResponseEntity<RoomResponseDto> getLargestRoom(@PathVariable long id) {
         return ResponseEntity.ok(propertyService.getLargestRoom(id));
     }

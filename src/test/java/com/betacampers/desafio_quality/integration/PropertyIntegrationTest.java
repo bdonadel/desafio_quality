@@ -4,6 +4,7 @@ import com.betacampers.desafio_quality.dto.RoomResponseDto;
 import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.model.Room;
 import com.betacampers.desafio_quality.repository.IPropertyRepository;
+import com.betacampers.desafio_quality.repository.PropertyRepository;
 import com.betacampers.desafio_quality.service.PropertyService;
 import com.betacampers.desafio_quality.util.TestUtilsGenerator;
 import org.junit.jupiter.api.Test;
@@ -36,16 +37,21 @@ public class PropertyIntegrationTest {
     @LocalServerPort
     private int port;
 
-    @Mock
+    //@Mock
+    @Autowired
     IPropertyRepository repository;
 
     @Test
     public void roomsArea_getRooms_whenPropertyExist() {
-        Property property = TestUtilsGenerator.getPropertyWithId();
+        /*Property property = TestUtilsGenerator.getPropertyWithId();
         List<Room> originalRooms = property.getPropRooms();
         BDDMockito.when(repository.getById(5)).thenReturn(property); //TODO pode isso?
+        */
+        long propertyId = 1;
+        Property property = repository.getById(propertyId);
+        List<Room> originalRooms = property.getPropRooms();
 
-        String url = "http://localhost:" + port + "/api/v1/1/roomsArea";
+        String url = "http://localhost:" + port + "/api/v1/" + propertyId + "/roomsArea";
 
         var retorno = testRestTemplate.exchange(url,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<RoomResponseDto>>(){});
