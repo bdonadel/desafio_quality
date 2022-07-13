@@ -49,6 +49,9 @@ public class PropertyRepository implements IPropertyRepository {
 
     @Override
     public Property getById(long propertyId) {
+        if (!properties.containsKey(propertyId)){
+            throw new RuntimeException("Não existe");
+        }
         return properties.get(propertyId);
     }
 
