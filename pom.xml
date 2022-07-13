@@ -14,7 +14,7 @@
     <name>desafio_quality</name>
     <description>Desafio 2 - Validação e Teste</description>
     <properties>
-        <java.version>17</java.version>
+        <java.version>11</java.version>
     </properties>
     <dependencies>
         <dependency>

@@ -15,25 +15,25 @@ import java.util.UUID;
 @RestController
 public class PropertyController {
     @Autowired
-    IPropertyService service;
+    private IPropertyService propertyService;
 
     @GetMapping("/area/{id}")
     public ResponseEntity<Double> getPropertyArea(@PathVariable UUID id) {
-        return ResponseEntity.ok(service.getPropertyArea(id));
+        return ResponseEntity.ok(propertyService.getPropertyArea(id));
     }
 
     @GetMapping("/value/{id}")
     public ResponseEntity<BigDecimal> getPropertyValue(@PathVariable UUID id) {
-        return ResponseEntity.ok(service.getPropertyValue(id));
+        return ResponseEntity.ok(propertyService.getPropertyValue(id));
     }
 
     @GetMapping("/largeRoom/{id}")
     public ResponseEntity<RoomResponseDto> getLargestRoom(@PathVariable UUID id) {
-        return ResponseEntity.ok(service.getLargestRoom(id));
+        return ResponseEntity.ok(propertyService.getLargestRoom(id));
     }
 
     @GetMapping("/roomsArea/{id}")
     public ResponseEntity<List<RoomResponseDto>> getRoomsArea(@PathVariable UUID id) {
-        return ResponseEntity.ok(service.getRoomsArea(id));
+        return ResponseEntity.ok(propertyService.getRoomsArea(id));
     }
 }

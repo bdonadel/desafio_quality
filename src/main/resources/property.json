@@ -1,0 +1,73 @@
+[
+  {
+    "propId": "35d75bed-7a67-4c5e-86f6-88f35f4d9a39",
+    "propName": "Casa A",
+    "propDistrict": "44c7288a-9c91-469e-8e84-d6ecbc70d9ba",
+    "propRooms": [
+      {
+        "roomName": "Quarto de solteiro",
+        "roomWidth": 2.5,
+        "roomLength": 4.2
+      },
+      {
+        "roomName": "Quarto de casal",
+        "roomWidth": 3.5,
+        "roomLength": 4.6
+      },
+      {
+        "roomName": "Cozinha",
+        "roomWidth": 3.6,
+        "roomLength": 4.8
+      },
+      {
+        "roomName": "Banheiro",
+        "roomWidth": 1.8,
+        "roomLength": 2.4
+      }
+    ]
+  },
+  {
+    "propId": "46a7205b-3838-4021-974b-f084b1d2d71c",
+    "propName": "Apartamento 12",
+    "propDistrict": "6e23244a-08bb-4007-9d80-d63770889728",
+    "propRooms": [
+      {
+        "roomName": "Quarto",
+        "roomWidth": 2.5,
+        "roomLength": 4.2
+      },
+      {
+        "roomName": "Cozinha",
+        "roomWidth": 2.5,
+        "roomLength": 3.0
+      },
+      {
+        "roomName": "Banheiro",
+        "roomWidth": 1.5,
+        "roomLength": 2.2
+      }
+    ]
+  },
+  {
+    "propId": "11cdf800-981a-4be0-98f7-af9fbb558c0f",
+    "propName": "Apartamento 08",
+    "propDistrict": "3f3b9388-686b-4c31-909f-ecb6b59e4e54",
+    "propRooms": [
+      {
+        "roomName": "Quarto",
+        "roomWidth": 3.5,
+        "roomLength": 3.2
+      },
+      {
+        "roomName": "Cozinha",
+        "roomWidth": 2.5,
+        "roomLength": 3.2
+      },
+      {
+        "roomName": "Banheiro",
+        "roomWidth": 2.0,
+        "roomLength": 1.6
+      }
+    ]
+  }
+]
