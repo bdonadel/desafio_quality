@@ -29,7 +29,7 @@ public class PropertyController {
         return ResponseEntity.ok(propertyService.getPropertyValue(id));
     }
 
-    @GetMapping("/{id}/largeRoom")
+    @GetMapping("/{id}/largest-room")
     public ResponseEntity<RoomResponseDto> getLargestRoom(@PathVariable long id) {
         return ResponseEntity.ok(propertyService.getLargestRoom(id));
     }

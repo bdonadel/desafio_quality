@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,7 +38,16 @@ public class PropertyService implements IPropertyService {
 
     @Override
     public RoomResponseDto getLargestRoom(long propertyId) {
-        return null;
+        Property property = propertyRepository.getById(propertyId);
+
+        Optional<Room> largestRoom = property.getPropRooms()
+                .stream()
+                .max(Comparator.comparing(r -> {
+                    return r.getRoomLength() * r.getRoomWidth();
+                }));
+
+        // TODO throw exception when Property has no Room
+        return new RoomResponseDto(largestRoom.get());
     }
 
     @Override

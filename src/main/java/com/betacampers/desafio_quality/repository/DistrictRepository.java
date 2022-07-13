@@ -4,13 +4,14 @@ import com.betacampers.desafio_quality.model.District;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Repository
 public class DistrictRepository implements IDistrictRepository {
-    private final Map<Long, District> districts;
+
+    private static Map<Long, District> districts;
 
     public DistrictRepository() {
         districts = new ArrayList<District>() {{
@@ -23,5 +24,6 @@ public class DistrictRepository implements IDistrictRepository {
     @Override
     public District getById(long districtId) {
         return districts.get(districtId);
+
     }
 }
