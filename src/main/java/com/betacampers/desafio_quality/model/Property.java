@@ -9,7 +9,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 public class Property {
-    private UUID propId;
+    private long propId;
     private String propName;
     private UUID propDistrict;
     private List<Room> propRooms;

@@ -8,7 +8,7 @@ import java.util.UUID;
 @Repository
 public class DistrictRepository implements IDistrictRepository {
     @Override
-    public District getById(UUID districtId) {
+    public District getById(long districtId) {
         return null;
     }
 }
