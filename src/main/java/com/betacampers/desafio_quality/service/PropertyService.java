@@ -73,9 +73,4 @@ public class PropertyService implements IPropertyService {
     public List<Property> getAllProperties() {
         return propertyRepository.getAll();
     }
-/*
-    public void addProperties(List<Property> properties) {
-        propertyRepository.addProperties(properties);
-    }
- */
 }

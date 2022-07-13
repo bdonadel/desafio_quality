@@ -1,6 +1,7 @@
 package com.betacampers.desafio_quality.integration;
 
 import com.betacampers.desafio_quality.dto.RoomResponseDto;
+import com.betacampers.desafio_quality.model.CustomError;
 import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.model.Room;
 import com.betacampers.desafio_quality.repository.IPropertyRepository;
@@ -63,5 +64,15 @@ public class PropertyIntegrationTest {
         assertThat(rooms.get(0).getRoomArea()).isPositive();
         assertThat(rooms.get(0).getRoomArea())
                 .isEqualTo(originalRooms.get(0).getRoomLength() * originalRooms.get(0).getRoomWidth());
+    }
+
+    @Test
+    public void roomsArea_returnStatusNotFound_whenPropertyNoExist() {
+        String url = "http://localhost:" + port + "/api/v1/555/roomsArea";
+
+        var retorno = testRestTemplate.exchange(url,
+                    HttpMethod.GET, null, CustomError.class);
+
+        assertThat(retorno.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 }

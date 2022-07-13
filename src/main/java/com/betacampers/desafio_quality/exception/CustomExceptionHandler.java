@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class CustomExceptionHandler {
 
-    @ExceptionHandler(PropertyWithoutRoomException.class)
-    public ResponseEntity<PropertyWithoutRoomException> propertyWithoutRoomHandler(PropertyWithoutRoomException ex) {
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<CustomException> propertyWithoutRoomHandler(CustomException ex) {
         return new ResponseEntity(ex.getError(), ex.getStatus());
     }
+
 }
