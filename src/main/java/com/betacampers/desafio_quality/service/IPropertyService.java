@@ -1,6 +1,7 @@
 package com.betacampers.desafio_quality.service;
 
 import com.betacampers.desafio_quality.dto.RoomResponseDto;
+import com.betacampers.desafio_quality.model.Property;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -11,4 +12,5 @@ public interface IPropertyService {
     BigDecimal getPropertyValue(UUID propertyId);
     RoomResponseDto getLargestRoom(UUID propertyId);
     List<RoomResponseDto> getRoomsArea(UUID propertyId);
+    List<Property> getAllProperties();
 }

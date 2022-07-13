@@ -36,4 +36,9 @@ public class PropertyService implements IPropertyService {
         Property property = repository.getById(propertyId);
         return property.getPropRooms().stream().map(RoomResponseDto::new).collect(Collectors.toList());
     }
+
+    @Override
+    public List<Property> getAllProperties() {
+        return repository.getAll();
+    }
 }

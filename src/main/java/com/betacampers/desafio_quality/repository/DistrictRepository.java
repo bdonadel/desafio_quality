@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Repository
 public class DistrictRepository implements IDistrictRepository {
-    private Map<UUID, District> districts;
+    private final Map<UUID, District> districts;
 
     public DistrictRepository() {
         districts = new ArrayList<District>() {{
@@ -23,6 +23,6 @@ public class DistrictRepository implements IDistrictRepository {
 
     @Override
     public District getById(UUID districtId) {
-        return null;
+        return districts.get(districtId);
     }
 }

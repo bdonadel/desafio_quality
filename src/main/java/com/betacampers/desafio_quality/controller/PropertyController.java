@@ -1,6 +1,7 @@
 package com.betacampers.desafio_quality.controller;
 
 import com.betacampers.desafio_quality.dto.RoomResponseDto;
+import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.service.IPropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,5 +38,10 @@ public class PropertyController {
     @GetMapping("/{id}/roomsArea")
     public ResponseEntity<List<RoomResponseDto>> getRoomsArea(@PathVariable UUID id) {
         return ResponseEntity.ok(propertyService.getRoomsArea(id));
+    }
+
+    @GetMapping("/properties")
+    public List<Property> getAllProperties() {
+        return propertyService.getAllProperties();
     }
 }

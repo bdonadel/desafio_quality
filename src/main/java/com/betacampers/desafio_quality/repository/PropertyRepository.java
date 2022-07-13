@@ -11,7 +11,11 @@ import java.util.*;
 @Repository
 public class PropertyRepository implements IPropertyRepository {
 
-    private Map<UUID, Property> properties;
+    private final Map<UUID, Property> properties = new HashMap<>();
+
+    public PropertyRepository() {
+        createProperties();
+    }
 
     private void createProperties(){
 
@@ -47,7 +51,11 @@ public class PropertyRepository implements IPropertyRepository {
 
     @Override
     public Property getById(UUID propertyId) {
-        this.createProperties();
-        return null;
+        return properties.get(propertyId);
+    }
+
+    @Override
+    public List<Property> getAll() {
+        return new ArrayList<>(properties.values());
     }
 }
