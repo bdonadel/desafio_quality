@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,7 +32,7 @@ public class PropertyService implements IPropertyService {
             m2 += r.getRoomLength() * r.getRoomWidth();
         }
 
-        return property.getPropDistrict().getValueDistrictM2().multiply(new BigDecimal(m2));
+        return property.getPropDistrict().getValueDistrictM2().multiply(new BigDecimal(m2)).setScale(2, RoundingMode.CEILING);
     }
 
     @Override
