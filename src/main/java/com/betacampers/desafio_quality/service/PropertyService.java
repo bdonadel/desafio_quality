@@ -23,7 +23,7 @@ public class PropertyService implements IPropertyService {
     }
 
     @Override
-    public BigDecimal getPropertyValue(UUID propertyId) {
+    public BigDecimal getPropertyValue(long propertyId) {
         Property property = propertyRepository.getById(propertyId);
 
         double m2 = 0;
