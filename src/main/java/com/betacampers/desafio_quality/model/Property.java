@@ -1,11 +1,16 @@
 package com.betacampers.desafio_quality.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 import java.util.List;
 import java.util.UUID;
 
+@Data
+@AllArgsConstructor
 public class Property {
-    UUID propId;
-    String propName;
-    UUID propDistrict;
-    List<Room> propRooms;
+    private UUID propId;
+    private String propName;
+    private UUID propDistrict;
+    private List<Room> propRooms;
 }
