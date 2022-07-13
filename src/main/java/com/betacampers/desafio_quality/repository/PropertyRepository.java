@@ -1,5 +1,6 @@
 package com.betacampers.desafio_quality.repository;
 
+import com.betacampers.desafio_quality.exception.PropertyNotFoundException;
 import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.model.Room;
 import org.springframework.stereotype.Repository;
@@ -51,7 +52,7 @@ public class PropertyRepository implements IPropertyRepository {
     @Override
     public Property getById(long propertyId) {
         if (!properties.containsKey(propertyId)){
-            throw new RuntimeException("Não existe");
+            throw new PropertyNotFoundException(propertyId);
         }
         return properties.get(propertyId);
     }
@@ -59,5 +60,10 @@ public class PropertyRepository implements IPropertyRepository {
     @Override
     public List<Property> getAll() {
         return new ArrayList<>(properties.values());
+    }
+
+    @Override
+    public void save(Property property) {
+        properties.put(property.getPropId(), property);
     }
 }
