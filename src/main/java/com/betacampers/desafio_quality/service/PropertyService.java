@@ -18,7 +18,7 @@ public class PropertyService implements IPropertyService {
     private IPropertyRepository propertyRepository;
 
     @Override
-    public Double getPropertyArea(UUID propertyId) {
+    public Double getPropertyArea(long propertyId) {
         return null;
     }
 
@@ -35,12 +35,12 @@ public class PropertyService implements IPropertyService {
     }
 
     @Override
-    public RoomResponseDto getLargestRoom(UUID propertyId) {
+    public RoomResponseDto getLargestRoom(long propertyId) {
         return null;
     }
 
     @Override
-    public List<RoomResponseDto> getRoomsArea(UUID propertyId) {
+    public List<RoomResponseDto> getRoomsArea(long propertyId) {
         return null;
     }
 }
