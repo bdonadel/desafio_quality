@@ -17,22 +17,22 @@ public class PropertyService implements IPropertyService {
     private IPropertyRepository repository;
 
     @Override
-    public Double getPropertyArea(UUID propertyId) {
+    public Double getPropertyArea(long propertyId) {
         return null;
     }
 
     @Override
-    public BigDecimal getPropertyValue(UUID propertyId) {
+    public BigDecimal getPropertyValue(long propertyId) {
         return null;
     }
 
     @Override
-    public RoomResponseDto getLargestRoom(UUID propertyId) {
+    public RoomResponseDto getLargestRoom(long propertyId) {
         return null;
     }
 
     @Override
-    public List<RoomResponseDto> getRoomsArea(UUID propertyId) {
+    public List<RoomResponseDto> getRoomsArea(long propertyId) {
         Property property = repository.getById(propertyId);
         return property.getPropRooms().stream().map(RoomResponseDto::new).collect(Collectors.toList());
     }

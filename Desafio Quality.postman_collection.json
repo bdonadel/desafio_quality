@@ -30,15 +30,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base}}/api/v1/16fbf3ac-843b-474e-a17e-fd3e69ca841a/area",
+					"raw": "{{base}}/api/v1/1/roomsArea",
 					"host": [
 						"{{base}}"
 					],
 					"path": [
 						"api",
 						"v1",
-						"16fbf3ac-843b-474e-a17e-fd3e69ca841a",
-						"area"
+						"1",
+						"roomsArea"
 					]
 				}
 			},
