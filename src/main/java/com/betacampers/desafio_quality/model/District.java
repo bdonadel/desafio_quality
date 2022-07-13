@@ -9,7 +9,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 public class District {
-    private UUID districtId;
+    private Long districtId;
     private String districtName;
     private BigDecimal valueDistrictM2;
 }

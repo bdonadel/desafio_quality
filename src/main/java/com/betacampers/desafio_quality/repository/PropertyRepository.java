@@ -4,6 +4,7 @@ import com.betacampers.desafio_quality.model.District;
 import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.model.Room;
 import org.springframework.stereotype.Repository;
+import static com.betacampers.desafio_quality.repository.DistrictRepository.getDistricts;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -13,31 +14,25 @@ public class PropertyRepository implements IPropertyRepository {
 
     private Map<UUID, Property> properties;
 
-    private void createProperties(){
+    public void createProperties(){
 
-        District d1 = new District(UUID.randomUUID(), "Barreiros", new BigDecimal(4500));
-        District d2 = new District(UUID.randomUUID(), "Campinas", new BigDecimal(5000));
-        District d3 = new District(UUID.randomUUID(), "Kobrasol", new BigDecimal(4900));
-
-
+        // Propriedade 1
         List<Room> rooms = new ArrayList<>(Arrays.asList(new Room("Quarto de solteiro", 2.5, 4.2),
                 new Room("Quarto de casal", 3.5, 4.6), new Room("Cozinha", 3.6, 4.8),
                 new Room("Banheiro", 1.8, 2.4)));
+        Property p1 = new Property(UUID.randomUUID(), "Casa A", getDistricts().get(1234L), rooms);
 
-        Property p1 = new Property(UUID.randomUUID(), "Casa A", d1.getDistrictId(), rooms);
-
-
+        // Propriedade 2
         rooms = new ArrayList<>(Arrays.asList(new Room("Quarto", 2.5, 4.2),
                 new Room("Cozinha", 2.5, 3.0),
                 new Room("Banheiro", 1.5, 2.2)));
+        Property p2 = new Property(UUID.randomUUID(), "Apartamento 12", getDistricts().get(4567L), rooms);
 
-        Property p2 = new Property(UUID.randomUUID(), "Apartamento 12", d2.getDistrictId(), rooms);
-
+        // Propriedade 3
         rooms = new ArrayList<>(Arrays.asList(new Room("Quarto", 3.5, 3.2),
                 new Room("Cozinha", 2.5, 3.2),
                 new Room("Banheiro", 2.0, 1.6)));
-
-        Property p3 = new Property(UUID.randomUUID(), "Apartamento 08", d3.getDistrictId(), rooms);
+        Property p3 = new Property(UUID.randomUUID(), "Apartamento 08", getDistricts().get(8890L), rooms);
 
         properties.put(p1.getPropId(), p1);
         properties.put(p2.getPropId(), p2);

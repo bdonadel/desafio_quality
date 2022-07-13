@@ -11,6 +11,6 @@ import java.util.UUID;
 public class Property {
     private UUID propId;
     private String propName;
-    private UUID propDistrict;
+    private District propDistrict;
     private List<Room> propRooms;
 }
