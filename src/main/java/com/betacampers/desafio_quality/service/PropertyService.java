@@ -1,6 +1,7 @@
 package com.betacampers.desafio_quality.service;
 
 import com.betacampers.desafio_quality.dto.RoomResponseDto;
+import com.betacampers.desafio_quality.exception.PropertyWithoutRoomException;
 import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.model.Room;
 import com.betacampers.desafio_quality.repository.IPropertyRepository;
@@ -40,13 +41,15 @@ public class PropertyService implements IPropertyService {
     public RoomResponseDto getLargestRoom(long propertyId) {
         Property property = propertyRepository.getById(propertyId);
 
+        if (property.getPropRooms().isEmpty())
+            throw new PropertyWithoutRoomException(propertyId);
+
         Optional<Room> largestRoom = property.getPropRooms()
                 .stream()
                 .max(Comparator.comparing(r -> {
                     return r.getRoomLength() * r.getRoomWidth();
                 }));
 
-        // TODO throw exception when Property has no Room
         return new RoomResponseDto(largestRoom.get());
     }
 
