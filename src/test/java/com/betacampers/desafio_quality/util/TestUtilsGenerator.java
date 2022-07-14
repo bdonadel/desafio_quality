@@ -79,4 +79,10 @@ public class TestUtilsGenerator {
         rooms.add(new Room("Quarto", 2.5, 3.5));
         return new Property(1L, "Casa", district, rooms);
     }
+
+    public static Property getPropertyWithoutRoom() {
+        var district = new District(2L, "Jardim Paulista", new BigDecimal("5"));
+        return new Property(3L, "Casa", district, new ArrayList<>());
+
+    }
 }
