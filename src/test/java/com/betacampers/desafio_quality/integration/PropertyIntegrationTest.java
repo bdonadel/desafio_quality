@@ -31,7 +31,7 @@ public class PropertyIntegrationTest {
 
     @BeforeEach
     public void clearData() {
-        repository.clear();
+        TestUtilsGenerator.emptyUsersFile();
     }
 
     @Test

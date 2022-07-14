@@ -50,6 +50,7 @@ public class PropertyRepository implements IPropertyRepository {
         Property property = new Property(propertyRequest, district);
         property.setPropId(nextId++);
         properties.put(property.getPropId(), property);
+        this.saveData();
         return property;
     }
 
@@ -64,11 +65,6 @@ public class PropertyRepository implements IPropertyRepository {
     @Override
     public List<Property> getAll() {
         return new ArrayList<>(properties.values());
-    }
-
-    @Override
-    public void clear() {
-        properties.clear();
     }
 
     private void loadData() {

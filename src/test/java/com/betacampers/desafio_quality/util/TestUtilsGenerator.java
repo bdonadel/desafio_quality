@@ -40,8 +40,7 @@ public class TestUtilsGenerator {
         try {
             writerDistrict = new PrintWriter(ResourceUtils.getFile("./src/" + SCOPE + "/resources/district.json"));
             writerProperty = new PrintWriter(ResourceUtils.getFile("./src/" + SCOPE + "/resources/property.json"));
-        } catch (
-                IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
