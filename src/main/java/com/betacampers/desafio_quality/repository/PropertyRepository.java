@@ -32,7 +32,8 @@ public class PropertyRepository implements IPropertyRepository {
         // Propriedade 2
         rooms = new ArrayList<>(Arrays.asList(new Room("Quarto", 2.5, 4.2),
                 new Room("Cozinha", 2.5, 3.0),
-                new Room("Banheiro", 1.5, 2.2)));
+                new Room("Banheiro", 2.5, 3.0)));
+//                new Room("Banheiro", 1.5, 2.2)));
         Property p2 = new Property(nextId++, "Apartamento 12", districts.getById(2), rooms);
 
         // Propriedade 3
