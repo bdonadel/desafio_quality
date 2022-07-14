@@ -3,8 +3,10 @@ package com.betacampers.desafio_quality.dto;
 import com.betacampers.desafio_quality.model.Room;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class RoomResponseDto {
     private String roomName;
