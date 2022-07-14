@@ -17,9 +17,8 @@ import java.util.*;
 @Repository
 public class PropertyRepository implements IPropertyRepository {
 
-    private String SCOPE;
-
     private static HashMap<Long, Property> properties;
+    private String SCOPE;
 
     public PropertyRepository() {
         Properties props = new Properties();

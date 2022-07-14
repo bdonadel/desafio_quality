@@ -55,7 +55,8 @@ public class PropertyService implements IPropertyService {
             m2 += r.getRoomLength() * r.getRoomWidth();
         }
 
-        return property.getPropDistrict().getValueDistrictM2().multiply(BigDecimal.valueOf(m2)).setScale(2, RoundingMode.CEILING);
+        return property.getPropDistrict().getValueDistrictM2().multiply(BigDecimal.valueOf(m2)).setScale(2,
+                RoundingMode.CEILING);
     }
 
     @Override
