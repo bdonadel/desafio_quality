@@ -29,6 +29,28 @@ class PropertyServiceTest {
     @Mock
     IPropertyRepository repository;
 
+    @BeforeEach
+    public void setup() {
+        BDDMockito.when(propertyRepository.getById(ArgumentMatchers.anyLong()))
+                .thenReturn(TestUtilsGenerator.getPropertyOk());
+    }
+
+    @Test
+    void getPropertyValue_returnPropertyValue_whenPropertyIdExist() {
+        Property property = TestUtilsGenerator.getPropertyOk();
+
+        BigDecimal propertyValue = service.getPropertyValue(property.getPropId());
+        double room1 = property.getPropRooms().get(0).getRoomWidth() * property.getPropRooms().get(0).getRoomLength();
+        double room2 = property.getPropRooms().get(1).getRoomWidth() * property.getPropRooms().get(1).getRoomLength();
+        double m2 = room1 + room2;
+        BigDecimal resultValue = property.getPropDistrict().getValueDistrictM2().multiply(new BigDecimal(m2).setScale(2, RoundingMode.CEILING));
+
+        Assertions.assertThat(resultValue).isEqualTo(propertyValue);
+        Assertions.assertThat(propertyValue).isPositive();
+        Assertions.assertThat(propertyValue).isNotNull();
+        verify(propertyRepository, atLeastOnce()).getById(property.getPropId());
+    }
+
     @Test
     void getRoomsArea_returnListRooms_whenPropertyIdExist() {
         // Arrange

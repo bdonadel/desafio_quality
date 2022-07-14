@@ -9,4 +9,5 @@ public interface IPropertyRepository {
     Property save(PropertyRequestDto property);
     Property getById(Long propertyId);
     List<Property> getAll();
+    Property save(Property property);
 }
