@@ -32,10 +32,10 @@ public class PropertyIntegrationTest {
         var room1 = property.getPropRooms().get(0);
         var room2 = property.getPropRooms().get(1);
 
+        //repository.save(property); TODO save property
+
         mockMvc.perform(get("/api/v1/" + property.getPropId() + "/roomsArea"))
                 .andExpect(status().isNotFound());
-
-        repository.addProperty(property);
 
         mockMvc.perform(get("/api/v1/" + property.getPropId() + "/roomsArea"))
                 .andExpect(status().isOk())

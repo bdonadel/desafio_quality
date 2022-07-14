@@ -1,9 +1,12 @@
 package com.betacampers.desafio_quality.service;
 
+import com.betacampers.desafio_quality.dto.PropertyRequestDto;
 import com.betacampers.desafio_quality.dto.RoomResponseDto;
 import com.betacampers.desafio_quality.exception.PropertyWithoutRoomException;
+import com.betacampers.desafio_quality.model.District;
 import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.model.Room;
+import com.betacampers.desafio_quality.repository.IDistrictRepository;
 import com.betacampers.desafio_quality.repository.IPropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,11 @@ import java.util.stream.Collectors;
 public class PropertyService implements IPropertyService {
     @Autowired
     private IPropertyRepository propertyRepository;
+
+    @Override
+    public Property saveProperty(PropertyRequestDto propertyRequest) {
+        return propertyRepository.save(propertyRequest);
+    }
 
     @Override
     public Double getPropertyArea(long propertyId) {

@@ -5,6 +5,7 @@ import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.model.Room;
 import com.betacampers.desafio_quality.repository.IPropertyRepository;
 import com.betacampers.desafio_quality.util.TestUtilsGenerator;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -43,11 +44,7 @@ class PropertyServiceTest {
 
         // Assert
         assertThat(rooms.size()).isEqualTo(2);
-
-        assertThat(roomDto1.getRoomArea())
-                .isEqualTo(room1.getRoomLength() * room1.getRoomWidth());
-
-        assertThat(roomDto2.getRoomArea())
-                .isEqualTo(room2.getRoomLength() * room2.getRoomWidth());
+        Assertions.assertEquals(roomDto1.getRoomArea(), room1.getRoomLength() * room1.getRoomWidth());
+        Assertions.assertEquals(roomDto2.getRoomArea(), room2.getRoomLength() * room2.getRoomWidth());
     }
 }

@@ -1,14 +1,13 @@
 package com.betacampers.desafio_quality.controller;
 
+import com.betacampers.desafio_quality.dto.PropertyRequestDto;
 import com.betacampers.desafio_quality.dto.RoomResponseDto;
 import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.service.IPropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -42,5 +41,10 @@ public class PropertyController {
     @GetMapping("/properties")
     public List<Property> getAllProperties() {
         return propertyService.getAllProperties();
+    }
+
+    @PostMapping("/property")
+    public ResponseEntity<Property> saveProperty(@RequestBody PropertyRequestDto property) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(propertyService.saveProperty(property));
     }
 }

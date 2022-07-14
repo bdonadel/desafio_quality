@@ -1,14 +1,21 @@
 package com.betacampers.desafio_quality.repository;
 
+import com.betacampers.desafio_quality.dto.PropertyRequestDto;
 import com.betacampers.desafio_quality.exception.PropertyNotFoundException;
+import com.betacampers.desafio_quality.model.District;
 import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.model.Room;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
 public class PropertyRepository implements IPropertyRepository {
+
+    @Autowired
+    private IDistrictRepository districtRepository;
+
     private static long nextId = 1;
 
     private final Map<Long, Property> properties = new HashMap<>();
@@ -49,9 +56,13 @@ public class PropertyRepository implements IPropertyRepository {
         properties.put(p4.getPropId(), p4);
     }
 
-    public void addProperty(Property property) {
+    @Override
+    public Property save(PropertyRequestDto propertyRequest) {
+        District district = districtRepository.getByName(propertyRequest.getDistrictName());
+        Property property = new Property(propertyRequest, district);
         property.setPropId(nextId++);
         properties.put(property.getPropId(), property);
+        return property;
     }
 
     @Override

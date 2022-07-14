@@ -1,7 +1,9 @@
 package com.betacampers.desafio_quality.repository;
 
+import com.betacampers.desafio_quality.exception.DistrictNotFoundException;
 import com.betacampers.desafio_quality.model.District;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,5 +26,15 @@ public class DistrictRepository implements IDistrictRepository {
     @Override
     public District getById(long districtId) {
         return districts.get(districtId);
+    }
+
+    @Override
+    public District getByName(String districtName) { //TODO
+        /*districts.forEach(district -> {
+            if(district.getName() == districtName) {
+                return district;
+            }
+        });*/
+        throw new DistrictNotFoundException(districtName);
     }
 }
