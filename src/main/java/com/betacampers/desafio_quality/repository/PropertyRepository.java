@@ -33,11 +33,11 @@ public class PropertyRepository implements IPropertyRepository {
     private static HashMap<Long, Property> properties;
 
     public PropertyRepository() {
-        Properties properties = new Properties();
+        Properties props = new Properties();
 
         try {
-            properties.load(new ClassPathResource("application.properties").getInputStream());
-            this.SCOPE = properties.getProperty("api.scope");
+            props.load(new ClassPathResource("application.properties").getInputStream());
+            this.SCOPE = props.getProperty("api.scope");
             this.loadData();
         } catch (IOException e) {
             e.printStackTrace();

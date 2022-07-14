@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verify;
 class DistrictServiceTest {
 
     @InjectMocks
-    IDistrictService districtService;
+    DistrictService districtService;
 
     @Mock
     IDistrictRepository districtRepository;
@@ -47,7 +47,6 @@ class DistrictServiceTest {
         District savedDistrict = districtService.save(district);
 
         assertThat(savedDistrict.getDistrictId()).isPositive();
-        assertThat(savedDistrict.getDistrictName()).isEqualTo(savedDistrict.getDistrictId());
         verify(districtRepository, atLeastOnce()).save(district);
     }
 

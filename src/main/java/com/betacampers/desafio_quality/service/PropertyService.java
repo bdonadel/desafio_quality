@@ -37,9 +37,7 @@ public class PropertyService implements IPropertyService {
 
         return property.getPropRooms()
                 .stream()
-                .mapToDouble(r -> {
-                    return r.getRoomLength() * r.getRoomWidth();
-                })
+                .mapToDouble(r -> r.getRoomLength() * r.getRoomWidth())
                 .sum();
     }
 
@@ -52,7 +50,7 @@ public class PropertyService implements IPropertyService {
             m2 += r.getRoomLength() * r.getRoomWidth();
         }
 
-        return property.getPropDistrict().getValueDistrictM2().multiply(new BigDecimal(m2)).setScale(2, RoundingMode.CEILING);
+        return property.getPropDistrict().getValueDistrictM2().multiply(BigDecimal.valueOf(m2)).setScale(2, RoundingMode.CEILING);
     }
 
     @Override
@@ -62,13 +60,11 @@ public class PropertyService implements IPropertyService {
         if (property.getPropRooms().isEmpty())
             throw new PropertyWithoutRoomException(propertyId);
 
-        Optional<Room> largestRoom = property.getPropRooms()
+        Room largestRoom = property.getPropRooms()
                 .stream()
-                .max(Comparator.comparing(r -> {
-                    return r.getRoomLength() * r.getRoomWidth();
-                }));
+                .max(Comparator.comparing(r -> r.getRoomLength() * r.getRoomWidth())).get();
 
-        return new RoomResponseDto(largestRoom.get());
+        return new RoomResponseDto(largestRoom);
     }
 
     @Override
