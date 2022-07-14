@@ -33,7 +33,6 @@ class PropertyServiceTest {
     IPropertyRepository repository;
 
     @Test
-    @DisplayName(value = "Test if get property area exists and return its room list and calculate room areas.")
     void getRoomsArea_returnListRooms_whenPropertyIdExist() {
         // Arrange
         Room room1 = new Room("Sala", 10, 10);
@@ -58,7 +57,6 @@ class PropertyServiceTest {
 
 
     @Test
-    @DisplayName(value = "Test if property area exists and return its area value.")
     void getPropertyArea_returnValue_whenPropertyExists() {
         // Arrange
         Property property = TestUtilsGenerator.getNewProperty();
@@ -81,7 +79,6 @@ class PropertyServiceTest {
     }
 
     @Test
-    @DisplayName(value = "Test property area when property without room.")
     void getPropertyArea_returnException_whenPropertyWithoutRoom() {
         // Arrange
         Property property = TestUtilsGenerator.getPropertyWithoutRoom();
@@ -98,7 +95,6 @@ class PropertyServiceTest {
     }
 
     @Test
-    @DisplayName(value = "Return largest room when property exists.")
     void getLargestRoom_returnValue_whenPropertyExists() {
         // Arrange
         Property property = TestUtilsGenerator.getNewProperty();
@@ -123,7 +119,6 @@ class PropertyServiceTest {
     }
 
     @Test
-    @DisplayName(value = "Tests if largestRoom return an exception when property has not rooms.")
     void getLargestRoom_returnException_whenPropertyWithoutRoom() {
         // Arrange
         Property property = TestUtilsGenerator.getPropertyWithoutRoom();
