@@ -17,9 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -84,7 +82,7 @@ class PropertyServiceTest {
 
     @Test
     @DisplayName(value = "Test property area when property without room.")
-    void getPropertyArea_returnValue_whenPropertyWithoutRoom() {
+    void getPropertyArea_returnException_whenPropertyWithoutRoom() {
         // Arrange
         Property property = TestUtilsGenerator.getPropertyWithoutRoom();
         when(repository.getById(property.getPropId())).thenReturn(property);
@@ -98,4 +96,47 @@ class PropertyServiceTest {
         assertThat(exception.getError().getDescription()).contains("" + property.getPropId());
         assertThat(exception.getError().getName()).isEqualTo(PropertyWithoutRoomException.class.getSimpleName());
     }
+
+    @Test
+    @DisplayName(value = "Return largest room when property exists.")
+    void getLargestRoom_returnValue_whenPropertyExists() {
+        // Arrange
+        Property property = TestUtilsGenerator.getNewProperty();
+        when(repository.getById(property.getPropId())).thenReturn(property);
+        double largestRoomArea = 0;
+        for (Room room : property.getPropRooms()) {
+            double area = room.getRoomLength() * room.getRoomWidth();
+            if (area > largestRoomArea)
+                largestRoomArea = area;
+        }
+
+        // Act
+        RoomResponseDto largestRoom = service.getLargestRoom(property.getPropId());
+
+        // Assert
+        assertThat(largestRoom).isNotNull();
+        assertThat(largestRoom.getRoomArea()).isPositive();
+        assertThat(largestRoom.getRoomLength()).isPositive();
+        assertThat(largestRoom.getRoomWidth()).isPositive();
+        assertThat(largestRoom.getRoomName()).isNotBlank();
+        assertThat(largestRoom.getRoomArea()).isEqualTo(largestRoomArea);
+    }
+
+    @Test
+    @DisplayName(value = "Tests if largestRoom return an exception when property has not rooms.")
+    void getLargestRoom_returnException_whenPropertyWithoutRoom() {
+        // Arrange
+        Property property = TestUtilsGenerator.getPropertyWithoutRoom();
+        when(repository.getById(property.getPropId())).thenReturn(property);
+
+        // Act
+        PropertyWithoutRoomException exception = Assertions.assertThrows(PropertyWithoutRoomException.class, () -> {
+            RoomResponseDto largestRoom = service.getLargestRoom(property.getPropId());
+        });
+
+        // Assert
+        assertThat(exception.getError().getDescription()).contains("" + property.getPropId());
+        assertThat(exception.getError().getName()).isEqualTo(PropertyWithoutRoomException.class.getSimpleName());
+    }
+
 }
