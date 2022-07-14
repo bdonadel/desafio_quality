@@ -18,23 +18,23 @@ public class PropertyController {
     @Autowired
     private IPropertyService propertyService;
 
-    @GetMapping("/{id}/area")
-    public ResponseEntity<Double> getPropertyArea(@PathVariable long id) {
+    @GetMapping("/property/{id}/area")
+    public ResponseEntity<Double> getPropertyArea(@PathVariable Long id) {
         return ResponseEntity.ok(propertyService.getPropertyArea(id));
     }
 
-    @GetMapping("/{id}/value")
-    public ResponseEntity<BigDecimal> getPropertyValue(@PathVariable long id) {
+    @GetMapping("/property/{id}/value")
+    public ResponseEntity<BigDecimal> getPropertyValue(@PathVariable Long id) {
         return ResponseEntity.ok(propertyService.getPropertyValue(id));
     }
 
-    @GetMapping("/{id}/largest-room")
-    public ResponseEntity<RoomResponseDto> getLargestRoom(@PathVariable long id) {
+    @GetMapping("/property/{id}/largest-room")
+    public ResponseEntity<RoomResponseDto> getLargestRoom(@PathVariable Long id) {
         return ResponseEntity.ok(propertyService.getLargestRoom(id));
     }
 
-    @GetMapping("/{id}/roomsArea")
-    public ResponseEntity<List<RoomResponseDto>> getRoomsArea(@PathVariable long id) {
+    @GetMapping("/property/{id}/roomsArea")
+    public ResponseEntity<List<RoomResponseDto>> getRoomsArea(@PathVariable Long id) {
         return ResponseEntity.ok(propertyService.getRoomsArea(id));
     }
 

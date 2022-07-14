@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class Property {
-    private long propId;
+    private Long propId;
     private String propName;
     private District propDistrict;
     private List<Room> propRooms;

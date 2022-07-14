@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface IPropertyService {
     Property saveProperty(PropertyRequestDto property);
-    Double getPropertyArea(long propertyId);
-    BigDecimal getPropertyValue(long propertyId);
-    RoomResponseDto getLargestRoom(long propertyId);
-    List<RoomResponseDto> getRoomsArea(long propertyId);
+    Double getPropertyArea(Long propertyId);
+    BigDecimal getPropertyValue(Long propertyId);
+    RoomResponseDto getLargestRoom(Long propertyId);
+    List<RoomResponseDto> getRoomsArea(Long propertyId);
     List<Property> getAllProperties();
 }

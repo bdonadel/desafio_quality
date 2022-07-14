@@ -29,7 +29,7 @@ public class PropertyService implements IPropertyService {
     }
 
     @Override
-    public Double getPropertyArea(long propertyId) {
+    public Double getPropertyArea(Long propertyId) {
         Property property = propertyRepository.getById(propertyId);
 
         if (property.getPropRooms().isEmpty())
@@ -44,7 +44,7 @@ public class PropertyService implements IPropertyService {
     }
 
     @Override
-    public BigDecimal getPropertyValue(long propertyId) {
+    public BigDecimal getPropertyValue(Long propertyId) {
         Property property = propertyRepository.getById(propertyId);
 
         double m2 = 0;
@@ -56,7 +56,7 @@ public class PropertyService implements IPropertyService {
     }
 
     @Override
-    public RoomResponseDto getLargestRoom(long propertyId) {
+    public RoomResponseDto getLargestRoom(Long propertyId) {
         Property property = propertyRepository.getById(propertyId);
 
         if (property.getPropRooms().isEmpty())
@@ -72,7 +72,7 @@ public class PropertyService implements IPropertyService {
     }
 
     @Override
-    public List<RoomResponseDto> getRoomsArea(long propertyId) {
+    public List<RoomResponseDto> getRoomsArea(Long propertyId) {
         Property property = propertyRepository.getById(propertyId);
         return property.getPropRooms().stream().map(RoomResponseDto::new).collect(Collectors.toList());
     }
