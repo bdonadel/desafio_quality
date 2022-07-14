@@ -73,10 +73,10 @@ public class TestUtilsGenerator {
         return new Property(1L, "Casa", district, List.of(rooms));
     }
 
-    public static PropertyRequestDto getNewPropertyResquest(Long districtId) {
+    public static Property getNewProperty(District district) {
         List<Room> rooms = new ArrayList<>();
         rooms.add(new Room("Cozinha", 4, 3.5));
         rooms.add(new Room("Quarto", 2.5, 3.5));
-        return new PropertyRequestDto("Casa", districtId, rooms);
+        return new Property(1L, "Casa", district, rooms);
     }
 }

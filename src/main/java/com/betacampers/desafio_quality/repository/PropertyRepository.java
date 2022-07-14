@@ -23,9 +23,6 @@ import java.util.Properties;
 @Repository
 public class PropertyRepository implements IPropertyRepository {
 
-    @Autowired
-    private IDistrictRepository districtRepository;
-
     private String SCOPE;
 
     private static long nextId = 1;
@@ -45,9 +42,7 @@ public class PropertyRepository implements IPropertyRepository {
     }
 
     @Override
-    public Property save(PropertyRequestDto propertyRequest) {
-        District district = districtRepository.getById(propertyRequest.getDistrictId());
-        Property property = new Property(propertyRequest, district);
+    public Property save(Property property) {
         property.setPropId(nextId++);
         properties.put(property.getPropId(), property);
         this.saveData();
