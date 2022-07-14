@@ -20,9 +20,8 @@ import java.util.Properties;
 @Repository
 public class DistrictRepository implements IDistrictRepository {
 
-    private String SCOPE;
-
     private static Map<Long, District> districts;
+    private String SCOPE;
 
     public DistrictRepository() {
         Properties properties = new Properties();
@@ -93,14 +92,14 @@ public class DistrictRepository implements IDistrictRepository {
             System.out.println("Failed while initializing DB, check your JSON formatting.");
         }
 
-        this.districts = loadedData;
+        districts = loadedData;
     }
 
     private void saveData() {
         ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         try {
             File file = ResourceUtils.getFile("./src/" + SCOPE + "/resources/district.json");
-            objectMapper.writeValue(file, this.districts);
+            objectMapper.writeValue(file, districts);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("Failed while writing to DB, check your resources files");

@@ -11,12 +11,10 @@ import com.betacampers.desafio_quality.repository.IPropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,11 +51,12 @@ public class PropertyService implements IPropertyService {
         Property property = propertyRepository.getById(propertyId);
 
         double m2 = 0;
-        for(Room r:property.getPropRooms()){
+        for (Room r : property.getPropRooms()) {
             m2 += r.getRoomLength() * r.getRoomWidth();
         }
 
-        return property.getPropDistrict().getValueDistrictM2().multiply(BigDecimal.valueOf(m2)).setScale(2, RoundingMode.CEILING);
+        return property.getPropDistrict().getValueDistrictM2().multiply(BigDecimal.valueOf(m2)).setScale(2,
+                RoundingMode.CEILING);
     }
 
     @Override

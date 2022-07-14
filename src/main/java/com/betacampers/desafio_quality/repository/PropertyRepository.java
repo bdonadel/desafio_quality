@@ -1,13 +1,10 @@
 package com.betacampers.desafio_quality.repository;
 
-import com.betacampers.desafio_quality.dto.PropertyRequestDto;
 import com.betacampers.desafio_quality.exception.PropertyNotFoundException;
-import com.betacampers.desafio_quality.model.District;
 import com.betacampers.desafio_quality.model.Property;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
@@ -23,11 +20,9 @@ import java.util.Properties;
 @Repository
 public class PropertyRepository implements IPropertyRepository {
 
-    private String SCOPE;
-
     private static long nextId = 1;
-
     private static HashMap<Long, Property> properties;
+    private String SCOPE;
 
     public PropertyRepository() {
         Properties props = new Properties();
