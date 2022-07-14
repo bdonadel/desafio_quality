@@ -1,0 +1,28 @@
+= API de imóveis
+:toc:
+:toc-title: Índice
+
+== Imóveis
+[[area_http_request]]
+=== Área total
+include::{snippets}/area-ok/path-parameters.adoc[]
+include::{snippets}/area-ok/http-request.adoc[]
+include::{snippets}/area-ok/http-response.adoc[]
+
+[[value_http_request]]
+=== Valor total
+include::{snippets}/value-ok/path-parameters.adoc[]
+include::{snippets}/value-ok/http-request.adoc[]
+include::{snippets}/value-ok/http-response.adoc[]
+
+[[largest_room_http_request]]
+=== Maior cômodo
+include::{snippets}/largest-room-ok/path-parameters.adoc[]
+include::{snippets}/largest-room-ok/http-request.adoc[]
+include::{snippets}/largest-room-ok/http-response.adoc[]
+
+[[rooms_area_http_request]]
+=== Lista de cômodos
+include::{snippets}/rooms-area-ok/path-parameters.adoc[]
+include::{snippets}/rooms-area-ok/http-request.adoc[]
+include::{snippets}/rooms-area-ok/http-response.adoc[]
