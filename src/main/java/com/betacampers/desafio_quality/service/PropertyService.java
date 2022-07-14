@@ -23,9 +23,15 @@ public class PropertyService implements IPropertyService {
     @Autowired
     private IPropertyRepository propertyRepository;
 
+    @Autowired
+    private IDistrictRepository districtRepository;
+
     @Override
     public Property saveProperty(PropertyRequestDto propertyRequest) {
-        return propertyRepository.save(propertyRequest);
+        District district = districtRepository.getById(propertyRequest.getDistrictId());
+        Property property = new Property(propertyRequest, district);
+        property.setPropDistrict(district);
+        return propertyRepository.save(property);
     }
 
     @Override

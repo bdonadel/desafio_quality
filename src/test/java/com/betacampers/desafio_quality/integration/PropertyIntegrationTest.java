@@ -38,8 +38,7 @@ public class PropertyIntegrationTest {
     public void roomsArea_getRooms_whenPropertyExists() throws Exception {
         District district = TestUtilsGenerator.getNewDistrict();
         district = districtRepository.save(district);
-        PropertyRequestDto propertyResquest = TestUtilsGenerator.getNewPropertyResquest(district.getDistrictId());
-        Property property = repository.save(propertyResquest);
+        Property property = repository.save(TestUtilsGenerator.getNewProperty());
         var room1 = property.getPropRooms().get(0);
         var room2 = property.getPropRooms().get(1);
 

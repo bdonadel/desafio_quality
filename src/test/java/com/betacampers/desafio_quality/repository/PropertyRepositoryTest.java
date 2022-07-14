@@ -2,6 +2,7 @@ package com.betacampers.desafio_quality.repository;
 
 import com.betacampers.desafio_quality.exception.PropertyNotFoundException;
 import com.betacampers.desafio_quality.model.Property;
+import com.betacampers.desafio_quality.model.Room;
 import com.betacampers.desafio_quality.util.TestUtilsGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,11 +29,14 @@ class PropertyRepositoryTest {
     @DisplayName("GetById retorna a propriedade")
     void getById_returnProperty_whenPropertyExist() {
 
-        Property p = TestUtilsGenerator.getPropertyOk();
+        Room r1 = new Room("Quarto 1", 2.0, 3.5);
+        Room r2 = new Room("Cozinha", 1.0, 2.5);
+
+        Property p = TestUtilsGenerator.getNewProperty(r1, r2);
 
         propertyRepository.save(p);
 
-        Property property = propertyRepository.getById(1000L);
+        Property property = propertyRepository.getById(p.getPropId());
 
         assertThat(property).isNotNull();
         assertThat(property.getPropId()).isEqualTo(p.getPropId());
@@ -42,7 +46,11 @@ class PropertyRepositoryTest {
     @Test
     void getById_throwException_whenPropertyNotExist() {
 
-        Property p = TestUtilsGenerator.getPropertyOk();
+        Room r1 = new Room("Quarto 1", 2.0, 3.5);
+        Room r2 = new Room("Cozinha", 1.0, 2.5);
+
+        Property p = TestUtilsGenerator.getNewProperty(r1, r2);
+
 
         propertyRepository.save(p);
 
@@ -58,7 +66,11 @@ class PropertyRepositoryTest {
     @Test
     void save_returnProperty_whenNewProperty() {
 
-        Property p = TestUtilsGenerator.getPropertyOk();
+        Room r1 = new Room("Quarto 1", 2.0, 3.5);
+        Room r2 = new Room("Cozinha", 1.0, 2.5);
+
+        Property p = TestUtilsGenerator.getNewProperty(r1, r2);
+
 
         Property savedProperty = propertyRepository.save(p);
 
@@ -78,13 +90,17 @@ class PropertyRepositoryTest {
     @Test
     void getAll_ListProperty_whenExists() {
 
-        Property p = TestUtilsGenerator.getPropertyOk();
+        Room r1 = new Room("Quarto 1", 2.0, 3.5);
+        Room r2 = new Room("Cozinha", 1.0, 2.5);
+
+        Property p = TestUtilsGenerator.getNewProperty(r1, r2);
+
 
         propertyRepository.save(p);
 
         List<Property> properties = propertyRepository.getAll();
 
-        assertThat(properties).hasSizeGreaterThan(4);
+        assertThat(properties).hasSizeGreaterThan(0);
 
     }
 
