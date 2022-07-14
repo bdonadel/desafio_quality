@@ -63,7 +63,11 @@ public class PropertyRepository implements IPropertyRepository {
     }
 
     @Override
-    public void save(Property property) {
-        properties.put(property.getPropId(), property);
+    public Property save(Property property) {
+        if(property != null) {
+            properties.put(property.getPropId(), property);
+            return property;
+        }
+        throw new RuntimeException("Não é possivel salvar propriedade nula");
     }
 }
