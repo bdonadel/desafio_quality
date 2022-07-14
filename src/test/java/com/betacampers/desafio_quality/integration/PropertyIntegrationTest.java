@@ -1,78 +1,52 @@
 package com.betacampers.desafio_quality.integration;
 
-import com.betacampers.desafio_quality.dto.RoomResponseDto;
-import com.betacampers.desafio_quality.model.CustomError;
-import com.betacampers.desafio_quality.model.Property;
-import com.betacampers.desafio_quality.model.Room;
 import com.betacampers.desafio_quality.repository.IPropertyRepository;
-import com.betacampers.desafio_quality.repository.PropertyRepository;
-import com.betacampers.desafio_quality.service.PropertyService;
 import com.betacampers.desafio_quality.util.TestUtilsGenerator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
+import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-@ExtendWith(MockitoExtension.class)
-@MockitoSettings(strictness = Strictness.LENIENT)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class PropertyIntegrationTest {
+    @Autowired
+    private MockMvc mockMvc;
 
     @Autowired
-    TestRestTemplate testRestTemplate;
-    @LocalServerPort
-    private int port;
+    private IPropertyRepository repository;
 
-    //@Mock
-    @Autowired
-    IPropertyRepository repository;
-
-    @Test
-    public void roomsArea_getRooms_whenPropertyExist() {
-        /*Property property = TestUtilsGenerator.getPropertyWithId();
-        List<Room> originalRooms = property.getPropRooms();
-        BDDMockito.when(repository.getById(5)).thenReturn(property); //TODO pode isso?
-        */
-        long propertyId = 1;
-        Property property = repository.getById(propertyId);
-        List<Room> originalRooms = property.getPropRooms();
-
-        String url = "http://localhost:" + port + "/api/v1/" + propertyId + "/roomsArea";
-
-        var retorno = testRestTemplate.exchange(url,
-                HttpMethod.GET, null, new ParameterizedTypeReference<List<RoomResponseDto>>(){});
-
-        List<RoomResponseDto> rooms = retorno.getBody();
-
-        assertThat(retorno.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(rooms).isNotNull();
-        assertThat(rooms.get(0).getRoomArea()).isPositive();
-        assertThat(rooms.get(0).getRoomArea())
-                .isEqualTo(originalRooms.get(0).getRoomLength() * originalRooms.get(0).getRoomWidth());
+    @BeforeEach
+    public void clearData() {
+        repository.clear();
     }
 
     @Test
-    public void roomsArea_returnStatusNotFound_whenPropertyNoExist() {
-        String url = "http://localhost:" + port + "/api/v1/555/roomsArea";
+    public void roomsArea_getRooms_whenPropertyExists() throws Exception {
+        var property = TestUtilsGenerator.getNewProperty();
+        var room1 = property.getPropRooms().get(0);
+        var room2 = property.getPropRooms().get(1);
 
-        var retorno = testRestTemplate.exchange(url,
-                    HttpMethod.GET, null, CustomError.class);
+        mockMvc.perform(get("/api/v1/" + property.getPropId() + "/roomsArea"))
+                .andExpect(status().isNotFound());
 
-        assertThat(retorno.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        repository.addProperty(property);
+
+        mockMvc.perform(get("/api/v1/" + property.getPropId() + "/roomsArea"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].roomName").value(room1.getRoomName()))
+                .andExpect(jsonPath("$[0].roomArea").value(room1.getRoomLength() * room1.getRoomWidth()))
+                .andExpect(jsonPath("$[1].roomName").value(room2.getRoomName()))
+                .andExpect(jsonPath("$[1].roomArea").value(room2.getRoomLength() * room2.getRoomWidth()));
+    }
+    
+    @Test
+    public void roomsArea_returnStatusNotFound_whenPropertyDoesNotExist() throws Exception {
+        mockMvc.perform(get("/api/v1/123/roomsArea")).andExpect(status().isNotFound());
     }
 }
