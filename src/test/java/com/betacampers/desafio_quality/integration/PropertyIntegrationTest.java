@@ -1,6 +1,7 @@
 package com.betacampers.desafio_quality.integration;
 
 import com.betacampers.desafio_quality.dto.RoomResponseDto;
+import com.betacampers.desafio_quality.model.District;
 import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.model.Room;
 import com.betacampers.desafio_quality.repository.IPropertyRepository;
@@ -17,6 +18,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.math.BigDecimal;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -37,7 +40,7 @@ public class PropertyIntegrationTest {
         var property = TestUtilsGenerator.getNewProperty();
         var room1 = property.getPropRooms().get(0);
         var room2 = property.getPropRooms().get(1);
-
+        
         mockMvc.perform(get("/api/v1/" + property.getPropId() + "/roomsArea"))
                 .andExpect(status().isNotFound());
 
@@ -50,12 +53,12 @@ public class PropertyIntegrationTest {
                 .andExpect(jsonPath("$[1].roomName").value(room2.getRoomName()))
                 .andExpect(jsonPath("$[1].roomArea").value(room2.getRoomLength() * room2.getRoomWidth()));
     }
-
+    
     @Test
-    public void roomsArea_returnStatusNotFound_whenPropertyDoesNotExist() throws Exception {
+    void roomsArea_returnStatusNotFound_whenPropertyDoesNotExist() throws Exception {
         mockMvc.perform(get("/api/v1/123/roomsArea")).andExpect(status().isNotFound());
     }
-
+    
     @Test
     void getPropertyArea_returnValue_whenPropertyExists() throws Exception {
         // Arrange
@@ -79,7 +82,7 @@ public class PropertyIntegrationTest {
         assertThat(propertyArea).isNotNull();
         assertThat(propertyArea).isPositive();
     }
-
+    
     @Test
     void getPropertyArea_returnException_whenPropertyWithoutRoom() throws Exception {
         // Arrange
@@ -94,6 +97,23 @@ public class PropertyIntegrationTest {
         // Assert
         assertThat(response.getResponse().getContentAsString()).contains("PropertyWithoutRoomException");
         assertThat(response.getResponse().getContentAsString()).contains("" + property.getPropId());
+    }
+
+    @Test
+    public void getPropertyValue_returnsPropertyValue_whenPropertyExists() throws Exception {
+        Room room1 = new Room("Sala", 10, 10);
+        Room room2 = new Room("Quarto", 20, 20);
+        District district = new District(1, "Centro", new BigDecimal("10"));
+        Property property = TestUtilsGenerator.getNewProperty(district, room1, room2);
+
+        mockMvc.perform(get("/api/v1/" + property.getPropId() + "/value"))
+                .andExpect(status().isNotFound());
+
+        repository.addProperty(property);
+
+        mockMvc.perform(get("/api/v1/" + property.getPropId() + "/value"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(String.valueOf("5000.00")));
     }
 
     @Test

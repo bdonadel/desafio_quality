@@ -14,7 +14,11 @@ public class TestUtilsGenerator {
     }
 
     public static Property getNewProperty(Room... rooms) {
-        var district = new District(1, "Centro", new BigDecimal("10"));
+        District district = new District(1, "Centro", new BigDecimal("10"));
+        return getNewProperty(district, rooms);
+    }
+
+    public static Property getNewProperty(District district, Room... rooms) {
         return new Property(1, "Casa", district, List.of(rooms));
     }
 
