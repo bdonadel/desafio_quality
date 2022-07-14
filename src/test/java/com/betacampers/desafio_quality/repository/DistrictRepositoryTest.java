@@ -40,7 +40,7 @@ class DistrictRepositoryTest {
         District district = TestUtilsGenerator.getNewDistrictWithId();
 
         DistrictNotFoundException exception = Assertions.assertThrows(DistrictNotFoundException.class, () -> {
-            District district1 = districtRepository.getById(district.getDistrictId());
+            districtRepository.getById(district.getDistrictId());
         });
 
         assertThat(exception.getError().getDescription()).contains(district.getDistrictId().toString());

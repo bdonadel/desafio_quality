@@ -47,7 +47,6 @@ class DistrictServiceTest {
         District savedDistrict = districtService.save(district);
 
         assertThat(savedDistrict.getDistrictId()).isPositive();
-        assertThat(savedDistrict.getDistrictName()).isEqualTo(savedDistrict.getDistrictName());
         verify(districtRepository, atLeastOnce()).save(district);
     }
 

@@ -53,6 +53,6 @@ public class PropertyIntegrationTest {
 
     @Test
     public void roomsArea_returnStatusNotFound_whenPropertyDoesNotExist() throws Exception {
-        mockMvc.perform(get("/api/v1/123/roomsArea")).andExpect(status().isNotFound());
+        mockMvc.perform(get("/api/v1/property/123/roomsArea")).andExpect(status().isNotFound());
     }
 }
