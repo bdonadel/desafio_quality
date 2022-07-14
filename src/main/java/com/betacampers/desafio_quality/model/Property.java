@@ -1,6 +1,7 @@
 package com.betacampers.desafio_quality.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.Valid;
