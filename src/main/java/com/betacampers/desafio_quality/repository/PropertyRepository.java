@@ -4,11 +4,21 @@ import com.betacampers.desafio_quality.dto.PropertyRequestDto;
 import com.betacampers.desafio_quality.exception.PropertyNotFoundException;
 import com.betacampers.desafio_quality.model.District;
 import com.betacampers.desafio_quality.model.Property;
-import com.betacampers.desafio_quality.model.Room;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ResourceUtils;
 
-import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
 
 @Repository
 public class PropertyRepository implements IPropertyRepository {
@@ -16,49 +26,27 @@ public class PropertyRepository implements IPropertyRepository {
     @Autowired
     private IDistrictRepository districtRepository;
 
+    private String SCOPE;
+
     private static long nextId = 1;
 
-    private final Map<Long, Property> properties = new HashMap<>();
+    private static HashMap<Long, Property> properties;
 
     public PropertyRepository() {
-        createProperties();
-    }
+        Properties properties = new Properties();
 
-    private void createProperties(){
-        DistrictRepository districts = new DistrictRepository();
-
-        // Propriedade 1
-        List<Room> rooms = new ArrayList<>(Arrays.asList(new Room("Quarto de solteiro", 2.5, 4.2),
-                new Room("Quarto de casal", 3.5, 4.6),
-                new Room("Cozinha", 3.6, 4.8),
-                new Room("Banheiro", 1.8, 2.4)));
-        Property p1 = new Property(nextId++, "Casa A", districts.getById(1) , rooms);
-
-        // Propriedade 2
-        rooms = new ArrayList<>(Arrays.asList(new Room("Quarto", 2.5, 4.2),
-                new Room("Cozinha", 2.5, 3.0),
-                new Room("Banheiro", 1.5, 2.2)));
-        Property p2 = new Property(nextId++, "Apartamento 12", districts.getById(2), rooms);
-
-        // Propriedade 3
-        rooms = new ArrayList<>(Arrays.asList(new Room("Quarto", 3.5, 3.2),
-                new Room("Cozinha", 2.5, 3.2),
-                new Room("Banheiro", 2.0, 1.6)));
-        Property p3 = new Property(nextId++, "Apartamento 08", districts.getById(3), rooms);
-
-        // Propriedade 4
-        rooms = new ArrayList<>();
-        Property p4 = new Property(nextId++, "Apartamento 08", districts.getById(3), rooms);
-
-        properties.put(p1.getPropId(), p1);
-        properties.put(p2.getPropId(), p2);
-        properties.put(p3.getPropId(), p3);
-        properties.put(p4.getPropId(), p4);
+        try {
+            properties.load(new ClassPathResource("application.properties").getInputStream());
+            this.SCOPE = properties.getProperty("api.scope");
+            this.loadData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public Property save(PropertyRequestDto propertyRequest) {
-        District district = districtRepository.getByName(propertyRequest.getDistrictName());
+        District district = districtRepository.getById(propertyRequest.getDistrictId());
         Property property = new Property(propertyRequest, district);
         property.setPropId(nextId++);
         properties.put(property.getPropId(), property);
@@ -67,7 +55,7 @@ public class PropertyRepository implements IPropertyRepository {
 
     @Override
     public Property getById(long propertyId) {
-        if (!properties.containsKey(propertyId)){
+        if (!properties.containsKey(propertyId)) {
             throw new PropertyNotFoundException(propertyId);
         }
         return properties.get(propertyId);
@@ -81,5 +69,39 @@ public class PropertyRepository implements IPropertyRepository {
     @Override
     public void clear() {
         properties.clear();
+    }
+
+    private void loadData() {
+        HashMap<Long, Property> loadedData = null;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        File file;
+        try {
+            file = ResourceUtils.getFile("./src/" + SCOPE + "/resources/property.json");
+            loadedData = objectMapper.readValue(file, new TypeReference<HashMap<Long, Property>>() {
+            });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Failed while initializing DB, check your resources files");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed while initializing DB, check your JSON formatting.");
+        }
+
+        this.properties = loadedData;
+    }
+
+    private void saveData() {
+        ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        try {
+            File file = ResourceUtils.getFile("./src/" + SCOPE + "/resources/property.json");
+            objectMapper.writeValue(file, this.properties);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Failed while writing to DB, check your resources files");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed while writing to DB, check your JSON formatting.");
+        }
     }
 }

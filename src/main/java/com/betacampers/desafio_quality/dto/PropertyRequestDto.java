@@ -8,6 +8,6 @@ import java.util.List;
 @Data
 public class PropertyRequestDto {
     private String propName;
-    private String districtName;
+    private Long districtId;
     private List<Room> propRooms;
 }
