@@ -1,17 +1,1 @@
-{
-  "1" : {
-    "districtId" : 1,
-    "districtName" : "Bairrão",
-    "valueDistrictM2" : 10
-  },
-  "2" : {
-    "districtId" : 2,
-    "districtName" : "Bairrão",
-    "valueDistrictM2" : 10
-  },
-  "3" : {
-    "districtId" : 3,
-    "districtName" : "Bairrão",
-    "valueDistrictM2" : 10
-  }
-}
+{}
