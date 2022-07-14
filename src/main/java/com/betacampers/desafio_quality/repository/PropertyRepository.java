@@ -1,13 +1,10 @@
 package com.betacampers.desafio_quality.repository;
 
-import com.betacampers.desafio_quality.dto.PropertyRequestDto;
 import com.betacampers.desafio_quality.exception.PropertyNotFoundException;
-import com.betacampers.desafio_quality.model.District;
 import com.betacampers.desafio_quality.model.Property;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
@@ -15,17 +12,12 @@ import org.springframework.util.ResourceUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 @Repository
 public class PropertyRepository implements IPropertyRepository {
 
     private String SCOPE;
-
-    private static long nextId = 1;
 
     private static HashMap<Long, Property> properties;
 
@@ -43,7 +35,8 @@ public class PropertyRepository implements IPropertyRepository {
 
     @Override
     public Property save(Property property) {
-        property.setPropId(nextId++);
+        Long greaterId = (properties.size() > 0) ? Collections.max(properties.keySet()) : 0L;
+        property.setPropId(greaterId + 1L);
         properties.put(property.getPropId(), property);
         this.saveData();
         return property;

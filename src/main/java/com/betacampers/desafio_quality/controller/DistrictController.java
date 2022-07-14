@@ -17,7 +17,7 @@ public class DistrictController {
 
     @PostMapping
     public ResponseEntity<District> createDistrict(@RequestBody District district) {
-        if(district.getDistrictId() != null) {
+        if (district.getDistrictId() != null) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(district));

@@ -27,7 +27,7 @@ public class District {
     @Digits(integer = 13, fraction = 2)
     private BigDecimal valueDistrictM2;
 
-    public District(String districtName, BigDecimal valueDistrictM2){
+    public District(String districtName, BigDecimal valueDistrictM2) {
         this.districtName = districtName;
         this.valueDistrictM2 = valueDistrictM2;
     }
