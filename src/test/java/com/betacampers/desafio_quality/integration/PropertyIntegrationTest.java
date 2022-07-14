@@ -3,6 +3,7 @@ package com.betacampers.desafio_quality.integration;
 import com.betacampers.desafio_quality.dto.PropertyRequestDto;
 import com.betacampers.desafio_quality.model.District;
 import com.betacampers.desafio_quality.model.Property;
+import com.betacampers.desafio_quality.model.Room;
 import com.betacampers.desafio_quality.repository.IDistrictRepository;
 import com.betacampers.desafio_quality.repository.IPropertyRepository;
 import com.betacampers.desafio_quality.util.TestUtilsGenerator;
@@ -14,8 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -29,17 +29,43 @@ public class PropertyIntegrationTest {
     @Autowired
     private IDistrictRepository districtRepository;
 
+    private Property property;
+
     @BeforeEach
     public void clearData() {
         TestUtilsGenerator.emptyUsersFile();
-    }
-
-    @Test
-    public void roomsArea_getRooms_whenPropertyExists() throws Exception {
         District district = TestUtilsGenerator.getNewDistrict();
         district = districtRepository.save(district);
         PropertyRequestDto propertyResquest = TestUtilsGenerator.getNewPropertyResquest(district.getDistrictId());
-        Property property = repository.save(propertyResquest);
+        this.property = repository.save(propertyResquest);
+    }
+
+    @Test
+    public void getPropertyArea_returnsPropertyArea_whenPropertyExists() throws Exception {
+        mockMvc.perform(get("/api/v1/property/" + property.getPropId() + "/area"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("22.75"));
+    }
+
+    @Test
+    public void getPropertyValue_returnsPropertyValue_whenPropertyExists() throws Exception {
+        mockMvc.perform(get("/api/v1/property/" + property.getPropId() + "/value"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("227.50"));
+    }
+
+    @Test
+    public void getLargestRoom_returnsLargestRoom_whenPropertyExists() throws Exception {
+        Room room1 = property.getPropRooms().get(0);
+
+        mockMvc.perform(get("/api/v1/property/" + property.getPropId() + "/largest-room"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.roomName").value(room1.getRoomName()))
+                .andExpect(jsonPath("$.roomArea").value(room1.getRoomLength() * room1.getRoomWidth()));
+    }
+
+    @Test
+    public void getRoomsArea_returnRoomAreas_whenPropertyExists() throws Exception {
         var room1 = property.getPropRooms().get(0);
         var room2 = property.getPropRooms().get(1);
 

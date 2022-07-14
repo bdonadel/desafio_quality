@@ -84,14 +84,14 @@ public class PropertyRepository implements IPropertyRepository {
             System.out.println("Failed while initializing DB, check your JSON formatting.");
         }
 
-        this.properties = loadedData;
+        properties = loadedData;
     }
 
     private void saveData() {
         ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         try {
             File file = ResourceUtils.getFile("./src/" + SCOPE + "/resources/property.json");
-            objectMapper.writeValue(file, this.properties);
+            objectMapper.writeValue(file, properties);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("Failed while writing to DB, check your resources files");
