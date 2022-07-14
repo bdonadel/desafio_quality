@@ -4,6 +4,7 @@ import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.model.Room;
 import org.springframework.stereotype.Repository;
 
+import javax.validation.Valid;
 import java.util.*;
 
 @Repository
@@ -23,7 +24,7 @@ public class PropertyRepository implements IPropertyRepository {
                 new Room("Quarto de casal", 3.5, 4.6),
                 new Room("Cozinha", 3.6, 4.8),
                 new Room("Banheiro", 1.8, 2.4)));
-        Property p1 = new Property(1L, "Casa A", districts.getById(1) , rooms);
+        Property p1 = new Property(-1L, "", districts.getById(1) , rooms);
 
         // Propriedade 2
         rooms = new ArrayList<>(Arrays.asList(new Room("Quarto", 2.5, 4.2),
