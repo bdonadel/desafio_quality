@@ -153,32 +153,6 @@ Retorna todos os imóveis.
         ]
     },
     {
-        "propId": 3,
-        "propName": "Apartamento 08",
-        "propDistrict": {
-            "districtId": 3,
-            "districtName": "Passo D'areia",
-            "valueDistrictM2": 10
-        },
-        "propRooms": [
-            {
-                "roomName": "Quarto",
-                "roomWidth": 3.5,
-                "roomLength": 3.2
-            },
-            {
-                "roomName": "Cozinha",
-                "roomWidth": 2.5,
-                "roomLength": 3.2
-            },
-            {
-                "roomName": "Banheiro",
-                "roomWidth": 2.0,
-                "roomLength": 1.6
-            }
-        ]
-    },
-    {
         "propId": 4,
         "propName": "Apartamento 08",
         "propDistrict": {
