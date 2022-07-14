@@ -32,7 +32,7 @@ public class PropertyIntegrationTest {
     private Property property;
 
     @BeforeEach
-    public void clearData() {
+    public void setup() {
         TestUtilsGenerator.emptyUsersFile();
         District district = TestUtilsGenerator.getNewDistrict();
         district = districtRepository.save(district);
@@ -47,10 +47,20 @@ public class PropertyIntegrationTest {
     }
 
     @Test
+    public void getPropertyArea_returnStatusNotFound_whenPropertyNotExists() throws Exception {
+        mockMvc.perform(get("/api/v1/property/50/area")).andExpect(status().isNotFound());
+    }
+
+    @Test
     public void getPropertyValue_returnsPropertyValue_whenPropertyExists() throws Exception {
         mockMvc.perform(get("/api/v1/property/" + property.getPropId() + "/value"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("227.50"));
+    }
+
+    @Test
+    public void getPropertyValue_returnStatusNotFound_whenPropertyNotExists() throws Exception {
+        mockMvc.perform(get("/api/v1/property/50/value")).andExpect(status().isNotFound());
     }
 
     @Test
@@ -61,6 +71,11 @@ public class PropertyIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.roomName").value(room1.getRoomName()))
                 .andExpect(jsonPath("$.roomArea").value(room1.getRoomLength() * room1.getRoomWidth()));
+    }
+
+    @Test
+    public void getLargestRoom_returnStatusNotFound_whenPropertyNotExists() throws Exception {
+        mockMvc.perform(get("/api/v1/property/50/largest-room")).andExpect(status().isNotFound());
     }
 
     @Test
@@ -77,7 +92,7 @@ public class PropertyIntegrationTest {
     }
 
     @Test
-    public void roomsArea_returnStatusNotFound_whenPropertyDoesNotExist() throws Exception {
+    public void getRoomsArea_returnStatusNotFound_whenPropertyDoesNotExist() throws Exception {
         mockMvc.perform(get("/api/v1/property/123/roomsArea")).andExpect(status().isNotFound());
     }
 }
