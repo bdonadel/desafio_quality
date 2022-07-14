@@ -43,7 +43,7 @@ public class PropertyIntegrationTest {
         var room1 = property.getPropRooms().get(0);
         var room2 = property.getPropRooms().get(1);
 
-        mockMvc.perform(get("/api/v1/" + property.getPropId() + "/roomsArea"))
+        mockMvc.perform(get("/api/v1/property/" + property.getPropId() + "/roomsArea"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].roomName").value(room1.getRoomName()))
                 .andExpect(jsonPath("$[0].roomArea").value(room1.getRoomLength() * room1.getRoomWidth()))
