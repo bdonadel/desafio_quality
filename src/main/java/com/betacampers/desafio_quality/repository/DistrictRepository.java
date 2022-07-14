@@ -36,8 +36,13 @@ public class DistrictRepository implements IDistrictRepository {
     }
 
     @Override
-    public District getById(long districtId) {
-        return districts.get(districtId);
+    public District getById(Long districtId) {
+        loadData();
+        District district = districts.get(districtId);
+        if (district != null) {
+            return district;
+        }
+        throw new DistrictNotFoundException(districtId);
     }
 
     @Override
@@ -62,7 +67,6 @@ public class DistrictRepository implements IDistrictRepository {
 
     public boolean exists(District district) {
         boolean ret = false;
-
         try {
             ret = this.getById(district.getDistrictId()) != null;
         } catch (DistrictNotFoundException e) {
