@@ -1,21 +1,15 @@
 package com.betacampers.desafio_quality.repository;
 
 import com.betacampers.desafio_quality.exception.PropertyNotFoundException;
-import com.betacampers.desafio_quality.model.District;
 import com.betacampers.desafio_quality.model.Property;
-import com.betacampers.desafio_quality.model.Room;
 import com.betacampers.desafio_quality.util.TestUtilsGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -60,4 +54,38 @@ class PropertyRepositoryTest {
         assertThat(exception.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
 
     }
+
+    @Test
+    void save_returnProperty_whenNewProperty() {
+
+        Property p = TestUtilsGenerator.getPropertyOk();
+
+        Property savedProperty = propertyRepository.save(p);
+
+        assertThat(savedProperty).isNotNull();
+
+    }
+
+    @Test
+    void save_returnProperty_whenNull() {
+
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
+            Property property = propertyRepository.save(null);
+        });
+
+    }
+
+    @Test
+    void getAll_ListProperty_whenExists() {
+
+        Property p = TestUtilsGenerator.getPropertyOk();
+
+        propertyRepository.save(p);
+
+        List<Property> properties = propertyRepository.getAll();
+
+        assertThat(properties).hasSizeGreaterThan(4);
+
+    }
+
 }
