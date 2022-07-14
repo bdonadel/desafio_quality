@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 public class District {
-    private long districtId;
+    private Long districtId;
     private String districtName;
     private BigDecimal valueDistrictM2;
 }
