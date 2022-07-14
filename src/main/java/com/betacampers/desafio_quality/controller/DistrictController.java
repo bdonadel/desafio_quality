@@ -30,5 +30,4 @@ public class DistrictController {
         return ResponseEntity.ok(service.getById(id));
     }
 
-
 }

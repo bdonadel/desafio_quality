@@ -1,19 +1,25 @@
 package com.betacampers.desafio_quality.util;
 
 import ch.qos.logback.core.net.ObjectWriter;
+import com.betacampers.desafio_quality.dto.PropertyRequestDto;
 import com.betacampers.desafio_quality.model.District;
 import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.model.Room;
+import com.betacampers.desafio_quality.repository.IDistrictRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 public class TestUtilsGenerator {
+    @Autowired
+    private IDistrictRepository districtRepository;
 
     private static String SCOPE;
     private static ObjectWriter mapper;
@@ -62,5 +68,12 @@ public class TestUtilsGenerator {
     public static Property getNewProperty(Room... rooms) {
         var district = new District(1L, "Centro", new BigDecimal("10"));
         return new Property(1L, "Casa", district, List.of(rooms));
+    }
+
+    public static PropertyRequestDto getNewPropertyResquest(Long districtId) {
+        List<Room> rooms = new ArrayList<>();
+        rooms.add(new Room("Cozinha", 4, 3.5));
+        rooms.add(new Room("Quarto", 2.5, 3.5));
+        return new PropertyRequestDto("Casa", districtId, rooms);
     }
 }
