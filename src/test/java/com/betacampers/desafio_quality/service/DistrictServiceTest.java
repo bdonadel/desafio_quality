@@ -1,9 +1,12 @@
 package com.betacampers.desafio_quality.service;
 
+import com.betacampers.desafio_quality.exception.CustomExceptionHandler;
+import com.betacampers.desafio_quality.exception.DistrictNotFoundException;
 import com.betacampers.desafio_quality.model.District;
 import com.betacampers.desafio_quality.repository.IDistrictRepository;
 import com.betacampers.desafio_quality.repository.IPropertyRepository;
 import com.betacampers.desafio_quality.util.TestUtilsGenerator;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,6 +51,9 @@ class DistrictServiceTest {
         District savedDistrict = districtService.save(district);
 
         assertThat(savedDistrict.getDistrictId()).isPositive();
+        assertThat(savedDistrict.getDistrictName()).isEqualTo(district.getDistrictName());
+        assertThat(savedDistrict.getValueDistrictM2()).isNotNull();
+        assertThat(savedDistrict.getValueDistrictM2()).isEqualByComparingTo(district.getValueDistrictM2());
         verify(districtRepository, atLeastOnce()).save(district);
     }
 
@@ -57,6 +64,12 @@ class DistrictServiceTest {
         District districtFound = districtService.getById(district.getDistrictId());
 
         assertThat(districtFound.getDistrictId()).isEqualTo(district.getDistrictId());
+        assertThat(districtFound.getDistrictId()).isNotNull();
+        assertThat(districtFound.getDistrictName()).isEqualTo(district.getDistrictName());
+        assertThat(districtFound.getDistrictName()).isNotBlank();
+        assertThat(districtFound.getValueDistrictM2()).isEqualByComparingTo(district.getValueDistrictM2());
+        assertThat(districtFound.getValueDistrictM2()).isNotNull();
         verify(districtRepository, atLeastOnce()).getById(district.getDistrictId());
     }
+
 }
