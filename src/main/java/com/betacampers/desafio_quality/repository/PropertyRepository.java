@@ -16,6 +16,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Properties;
 
+/**
+ * Repository da Property, implementa Interface IPropertyRepository
+ */
 @Repository
 public class PropertyRepository implements IPropertyRepository {
 

@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
+/**
+ * Representa um bairro
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

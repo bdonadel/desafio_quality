@@ -17,6 +17,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Service da Property, implementa Interface IPropertyService
+ */
 @Service
 public class PropertyService implements IPropertyService {
     @Autowired

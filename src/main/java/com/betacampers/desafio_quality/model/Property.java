@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * Representa um imóvel
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

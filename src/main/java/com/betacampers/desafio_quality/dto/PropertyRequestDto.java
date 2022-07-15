@@ -9,6 +9,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 
+/**
+ * DTO de requisição para cadastrar imóvel
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

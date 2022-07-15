@@ -5,6 +5,9 @@ import com.betacampers.desafio_quality.repository.IDistrictRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service do District, implementa Interface IDistrictService
+ */
 @Service
 public class DistrictService implements IDistrictService {
 

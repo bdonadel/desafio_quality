@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
 
+/**
+ * Representa um cômodo de um imóvel
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

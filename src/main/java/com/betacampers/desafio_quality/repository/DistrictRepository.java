@@ -17,6 +17,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * Repository do District, implementa Interface IDistrictRepository
+ */
 @Repository
 public class DistrictRepository implements IDistrictRepository {
 
