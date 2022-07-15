@@ -27,13 +27,14 @@ API REST desenvolvida pelo grupo Beta Campers para o Desafio Spring durante o IT
 - [Funcionalidades](#funcionalidades)
 - <a href="https://drive.google.com/file/d/1gCBrdi8smZKJKubESFuziZZ9NbGer9XZ/view?usp=sharing">Diagrama UML </a>
 - [Imóveis](#imóveis)
+  - [Post - Cadastra um novo imóvel](#addProperty)
   - [Get - Retorna a área de um imóvel](#propertyArea)
   - [Get - Retorna o valor de um imóvel](#propertyValue)
   - [Get - Retorna o maior cômodo do imóvel](#biggestRoom)
   - [Get - Retorna informações do cômodo](#roomInfo)
   - [Get - Retorna todos os imóveis](#allProperties)
 - [Bairros](#bairros)
-  - [Post - Cadastra um novo bairro](#createDistrict)
+  - [Post - Cadastra um novo bairro](#addDistrict)
   - [Get - Retorna o bairro de acordo com o Id passado](#getDistrict)
 # Observações
 
@@ -41,7 +42,7 @@ API REST desenvolvida pelo grupo Beta Campers para o Desafio Spring durante o IT
 
 ## Imóveis
 
-`POST /api/v1/property` <br name="propertyArea">
+`POST /api/v1/property` <br name="addProperty">
 Cadastra um novo imóvel.
 <pre><code><b>Payload Example:</b>
 {
@@ -238,7 +239,7 @@ Retorna todos os imóveis.
 
 ## Bairros
 
-`POST /api/v1/1/district` <br name="createDistrict">
+`POST /api/v1/1/district` <br name="addDistrict">
 Cadastra um novo bairro.
 <pre><code><b>Payload example:</b>
     {
