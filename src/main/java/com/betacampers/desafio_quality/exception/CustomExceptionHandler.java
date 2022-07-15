@@ -1,8 +1,6 @@
 package com.betacampers.desafio_quality.exception;
 
-import com.betacampers.desafio_quality.model.CustomError;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +26,8 @@ public class CustomExceptionHandler {
         // Organiza todos os erros recebidos em uma lista.
         List<FieldError> errors = exception.getBindingResult().getFieldErrors();
 
-        /*
-        Instancia um CustomError, recebendo o simpleName da exception no primeiro parâmetro
-        e transformando as mensagens de cada FieldError em uma String no segundo parâmetro
-         */
+        // Instancia um CustomError, recebendo o simpleName da exception no primeiro parâmetro
+        // e transformando as mensagens de cada FieldError em uma String no segundo parâmetro
         CustomError error = new CustomError(exception.getClass().getSimpleName(), errors.stream()
                 .map(FieldError::getDefaultMessage)
                 .distinct()
@@ -40,12 +36,10 @@ public class CustomExceptionHandler {
     }
 
     // Trata as exceções lançadas quando ocorre erro na transformação do JSON recebido em Objeto Java
-    @ExceptionHandler({MismatchedInputException.class, InvalidFormatException.class})
+    @ExceptionHandler(MismatchedInputException.class)
     public ResponseEntity<CustomError> invalidFormatHandler(MismatchedInputException exception) {
-        /*
-        Através do caminho do erro (path), pega o campo (getFieldName) onde o erro ocorreu. Quando o erro ocorrer
-        dentro de uma lista, o replace substituirá o valor "null" por ":" para melhorar a visualização.
-         */
+        // Através do caminho do erro (path), pega o campo (getFieldName) onde o erro ocorreu. Quando o erro ocorrer
+        // dentro de uma lista, o replace substituirá o valor "null" por ":" para melhorar a visualização.
         String field = exception.getPath().stream()
                 .map(JsonMappingException.Reference::getFieldName)
                 .collect(Collectors.joining())
@@ -54,10 +48,8 @@ public class CustomExceptionHandler {
         // Concatena uma mensagem contendo o nome do campo e o tipo esperado no campo.
         String message = field + ": esperado " + exception.getTargetType().getSimpleName() + ".";
 
-        /*
-        Instancia um CustomError, recebendo o simpleName da exception no primeiro parâmetro
-        e a mensagem no segundo parâmetro.
-         */
+        // Instancia um CustomError, recebendo o simpleName da exception no primeiro parâmetro
+        // e a mensagem no segundo parâmetro.
         CustomError error = new CustomError(exception.getClass().getSimpleName(), message);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }

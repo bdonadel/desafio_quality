@@ -23,16 +23,16 @@ import java.util.Properties;
 @Repository
 public class DistrictRepository implements IDistrictRepository {
 
-    private static Map<Long, District> districts;
-    private String SCOPE;
+    private Map<Long, District> districts;
+    private String scope;
 
     public DistrictRepository() {
         Properties properties = new Properties();
 
         try {
             properties.load(new ClassPathResource("application.properties").getInputStream());
-            this.SCOPE = properties.getProperty("api.scope");
-            this.loadData();
+            scope = properties.getProperty("api.scope");
+            loadData();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,7 +63,7 @@ public class DistrictRepository implements IDistrictRepository {
 
         districts.put(district.getDistrictId(), district);
 
-        this.saveData();
+        saveData();
 
         return district;
     }
@@ -71,7 +71,7 @@ public class DistrictRepository implements IDistrictRepository {
     public boolean exists(District district) {
         boolean ret = false;
         try {
-            ret = this.getById(district.getDistrictId()) != null;
+            ret = getById(district.getDistrictId()) != null;
         } catch (DistrictNotFoundException ignored) {
         }
 
@@ -84,7 +84,7 @@ public class DistrictRepository implements IDistrictRepository {
         ObjectMapper objectMapper = new ObjectMapper();
         File file;
         try {
-            file = ResourceUtils.getFile("./src/" + SCOPE + "/resources/district.json");
+            file = ResourceUtils.getFile("./src/" + scope + "/resources/district.json");
             loadedData = objectMapper.readValue(file, new TypeReference<>() {});
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -100,7 +100,7 @@ public class DistrictRepository implements IDistrictRepository {
     private void saveData() {
         ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         try {
-            File file = ResourceUtils.getFile("./src/" + SCOPE + "/resources/district.json");
+            File file = ResourceUtils.getFile("./src/" + scope + "/resources/district.json");
             objectMapper.writeValue(file, districts);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

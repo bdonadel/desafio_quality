@@ -15,35 +15,28 @@ import java.util.List;
 import java.util.Properties;
 
 public class TestUtilsGenerator {
-    private static String SCOPE;
+    private static String scope;
 
     public static void emptyUsersFile() {
-        Properties properties = new Properties();
-
         try {
+            Properties properties = new Properties();
+
             properties.load(new ClassPathResource("application.properties").getInputStream());
-            SCOPE = properties.getProperty("api.scope");
+            scope = properties.getProperty("api.scope");
+
+            PrintWriter writerDistrict = new PrintWriter(
+                    ResourceUtils.getFile("./src/" + scope + "/resources" + "/district.json"));
+            PrintWriter writerProperty = new PrintWriter(
+                    ResourceUtils.getFile("./src/" + scope + "/resources" + "/property.json"));
+
+            writerDistrict.print("{}");
+            writerDistrict.close();
+
+            writerProperty.print("{}");
+            writerProperty.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-
-        PrintWriter writerDistrict = null;
-        PrintWriter writerProperty = null;
-
-        try {
-            writerDistrict = new PrintWriter(ResourceUtils.getFile("./src/" + SCOPE + "/resources/district.json"));
-            writerProperty = new PrintWriter(ResourceUtils.getFile("./src/" + SCOPE + "/resources/property.json"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        assert writerDistrict != null;
-        writerDistrict.print("{}");
-        writerDistrict.close();
-
-        assert writerProperty != null;
-        writerProperty.print("{}");
-        writerProperty.close();
     }
 
 

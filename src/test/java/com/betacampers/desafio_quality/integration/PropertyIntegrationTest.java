@@ -43,7 +43,7 @@ public class PropertyIntegrationTest {
         TestUtilsGenerator.emptyUsersFile();
         District district = TestUtilsGenerator.getNewDistrict();
         district = districtRepository.save(district);
-        this.property = repository.save(TestUtilsGenerator.getNewProperty(district));
+        property = repository.save(TestUtilsGenerator.getNewProperty(district));
     }
 
     @Test

@@ -13,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,6 +24,7 @@ import java.math.RoundingMode;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,7 +42,7 @@ class PropertyServiceTest {
 
     @BeforeEach
     public void setup() {
-        BDDMockito.when(propertyRepository.getById(ArgumentMatchers.anyLong()))
+        when(propertyRepository.getById(ArgumentMatchers.anyLong()))
                 .thenReturn(TestUtilsGenerator.getNewProperty());
     }
 
@@ -59,10 +59,10 @@ class PropertyServiceTest {
         Property property = service.saveProperty(newProperty);
 
         assertThat(property.getPropId()).isPositive();
-        Assertions.assertEquals(property.getPropName(), newProperty.getPropName());
-        Assertions.assertEquals(property.getPropRooms().get(0), newProperty.getPropRooms().get(0));
-        Assertions.assertEquals(property.getPropRooms().get(1), newProperty.getPropRooms().get(1));
-        Assertions.assertEquals(property.getPropDistrict().getDistrictId(), newProperty.getDistrictId());
+        assertEquals(property.getPropName(), newProperty.getPropName());
+        assertEquals(property.getPropRooms().get(0), newProperty.getPropRooms().get(0));
+        assertEquals(property.getPropRooms().get(1), newProperty.getPropRooms().get(1));
+        assertEquals(property.getPropDistrict().getDistrictId(), newProperty.getDistrictId());
     }
 
     @Test
@@ -98,8 +98,8 @@ class PropertyServiceTest {
 
         // Assert
         assertThat(rooms.size()).isEqualTo(2);
-        Assertions.assertEquals(roomDto1.getRoomArea(), room1.getRoomLength() * room1.getRoomWidth());
-        Assertions.assertEquals(roomDto2.getRoomArea(), room2.getRoomLength() * room2.getRoomWidth());
+        assertEquals(roomDto1.getRoomArea(), room1.getRoomLength() * room1.getRoomWidth());
+        assertEquals(roomDto2.getRoomArea(), room2.getRoomLength() * room2.getRoomWidth());
     }
 
 

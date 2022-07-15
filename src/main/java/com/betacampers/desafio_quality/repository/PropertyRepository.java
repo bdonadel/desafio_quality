@@ -22,16 +22,16 @@ import java.util.Properties;
 @Repository
 public class PropertyRepository implements IPropertyRepository {
 
-    private static HashMap<Long, Property> properties;
-    private String SCOPE;
+    private HashMap<Long, Property> properties;
+    private String scope;
 
     public PropertyRepository() {
         Properties props = new Properties();
 
         try {
             props.load(new ClassPathResource("application.properties").getInputStream());
-            this.SCOPE = props.getProperty("api.scope");
-            this.loadData();
+            scope = props.getProperty("api.scope");
+            loadData();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,7 +42,7 @@ public class PropertyRepository implements IPropertyRepository {
         Long greaterId = (properties.size() > 0) ? Collections.max(properties.keySet()) : 0L;
         property.setPropId(greaterId + 1L);
         properties.put(property.getPropId(), property);
-        this.saveData();
+        saveData();
         return property;
     }
 
@@ -60,7 +60,7 @@ public class PropertyRepository implements IPropertyRepository {
         ObjectMapper objectMapper = new ObjectMapper();
         File file;
         try {
-            file = ResourceUtils.getFile("./src/" + SCOPE + "/resources/property.json");
+            file = ResourceUtils.getFile("./src/" + scope + "/resources/property.json");
             loadedData = objectMapper.readValue(file, new TypeReference<>() {});
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -76,7 +76,7 @@ public class PropertyRepository implements IPropertyRepository {
     private void saveData() {
         ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         try {
-            File file = ResourceUtils.getFile("./src/" + SCOPE + "/resources/property.json");
+            File file = ResourceUtils.getFile("./src/" + scope + "/resources/property.json");
             objectMapper.writeValue(file, properties);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

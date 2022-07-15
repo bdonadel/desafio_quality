@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -83,17 +85,6 @@ public class DistrictIntegrationTest {
     }
 
     @Test
-    public void postCreateDistrict_returnStatusBadRequest_whenDistrictWithId() throws Exception {
-        District district = TestUtilsGenerator.getNewDistrict();
-        district = districtRepository.save(district);
-
-        mockMvc.perform(post("/api/v1/district")
-                        .content(mapper.writeValueAsString(district))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
     public void postCreateDistrict_returnStatusBadRequest_whenDistrictNameIsBlank() throws Exception {
         District district = TestUtilsGenerator.getNewDistrict();
         district.setDistrictName(null);
@@ -156,5 +147,20 @@ public class DistrictIntegrationTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("2 casas decimais")));
+    }
+
+    @Test
+    public void postCreateDistrict_returnStatusBadRequest_whenBodyIsMalformedToBeDeserialized() throws Exception {
+        Map<String, Object> body = new HashMap<>();
+        body.put("districtId", 1);
+        body.put("districtName", "Teste");
+        body.put("valueDistrictM2", "a"); // invalid
+
+        mockMvc.perform(post("/api/v1/district")
+                        .content(mapper.writeValueAsString(body))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("InvalidFormatException"))
+                .andExpect(jsonPath("$.description", containsString("esperado BigDecimal")));
     }
 }

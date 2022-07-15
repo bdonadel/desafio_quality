@@ -1,15 +1,13 @@
-package com.betacampers.desafio_quality.model;
+package com.betacampers.desafio_quality.exception;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
 /**
  * Representa um erro para ser retornado em Exception
  */
-@Data
+@Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public class CustomError {
     private String name;
     private String description;

@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -15,8 +14,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -30,16 +28,15 @@ class DistrictServiceTest {
 
     @BeforeEach
     public void setup() {
-        BDDMockito.when(districtRepository.save(ArgumentMatchers.any(District.class)))
+        when(districtRepository.save(ArgumentMatchers.any(District.class)))
                 .thenReturn(TestUtilsGenerator.getNewDistrictWithId());
 
-        BDDMockito.when(districtRepository.getById(ArgumentMatchers.anyLong())).
+        when(districtRepository.getById(ArgumentMatchers.anyLong())).
                 thenReturn(TestUtilsGenerator.getNewDistrictWithId());
     }
 
     @Test
     void save_returnDistrict_whenNewDistrict() {
-
         District district = TestUtilsGenerator.getNewDistrict();
 
         District savedDistrict = districtService.save(district);
