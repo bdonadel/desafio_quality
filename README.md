@@ -1,5 +1,5 @@
 # Desafio_Quality
-API REST desenvolvida pelo grupo Beta Campers para o Desafio Spring durante o IT Bootcamp Backend Java (wave 6). 
+API REST desenvolvida pelo grupo Beta Campers para o Desafio Quality focado em testes durante o IT Bootcamp Backend Java (wave 6). 
 
 ## Autores
 <a href="https://github.com/vfreitasmeli">
