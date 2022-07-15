@@ -4,6 +4,9 @@ import com.betacampers.desafio_quality.model.Property;
 
 import java.util.List;
 
+/**
+ * Interface para a camada Repository da Property.
+ */
 public interface IPropertyRepository {
 
     /**

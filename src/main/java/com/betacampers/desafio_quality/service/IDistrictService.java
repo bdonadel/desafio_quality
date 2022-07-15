@@ -2,6 +2,9 @@ package com.betacampers.desafio_quality.service;
 
 import com.betacampers.desafio_quality.model.District;
 
+/**
+ * Interface para a camada Service do District.
+ */
 public interface IDistrictService {
 
     /**

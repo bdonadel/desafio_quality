@@ -2,6 +2,9 @@ package com.betacampers.desafio_quality.repository;
 
 import com.betacampers.desafio_quality.model.District;
 
+/**
+ * Interface para a camada Repository do District.
+ */
 public interface IDistrictRepository {
     /**
      * Método do repository responsável por retornar um bairro dado um id.

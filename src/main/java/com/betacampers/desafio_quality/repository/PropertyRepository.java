@@ -14,6 +14,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Repository da Property, implementa Interface IPropertyRepository
+ */
 @Repository
 public class PropertyRepository implements IPropertyRepository {
 
