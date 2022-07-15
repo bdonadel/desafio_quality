@@ -38,8 +38,12 @@ API REST desenvolvida pelo grupo Beta Campers para o Desafio Quality focado em t
 - [Testes](#testes)
   - [Testes de Integração District]()
   - [Testes de Integração Property]()
-  - [Testes Unitários Repositório District]()
-  - [Testes Unitários Repositório Property](#TURProperty) <br>
+  - [Testes Unitários Repositório Property](#TURProperty)<br>
+    ⋆ [getById_returnProperty_whenPropertyExist](#getByIdProperty1) <br>
+    ⋆ [getById_throwException_whenPropertyNotExist](#getByIdProperty2) <br>
+    ⋆ [save_returnProperty_whenNewProperty](#saveProperty1) <br>
+    ⋆ [save_throwException_whenNull](#saveProperty2) <br>
+  - [Testes Unitários Repositório District](#TURDistrict) <br>
     ⋆ [getById_returnDistrict_whenDistrictExists](#getByIdDistrict1) <br>
     ⋆ [getById_throwException_whenDistrictNotExist](#getByIdDistrict2) <br>
     ⋆ [save_returnDistrict_whenNewDistrict](#saveDistrict1) <br>
@@ -222,7 +226,7 @@ Retorna o bairro de acordo com o Id passado.
 ## Testes
 
 
-### Testes Unitários Repositório Property <br name="TURProperty">
+### Testes Unitários Repositório District <br name="TURDistrict">
 
 `getById_returnDistrict_whenDistrictExists`<br name="getByIdDistrict1">
 Testa o caso do método getById, quando o bairro existe e deve retornar o bairro. 
@@ -268,3 +272,33 @@ Testa o caso do método save, de quando o Id já existe e o bairro não existe e
 Por fim é analisado se:
   - Se contém o Id do bairro na mensagem de erro
   - Se o Status recebido é NOT FOUND
+
+### Testes Unitários Repositório Property <br name="TURProperty">
+
+`getById_returnProperty_whenPropertyExist`<br name="getByIdProperty1">
+Testa o caso do método getById, quando o imóvel existe e deve retornar o imóvel. 
+É gerado um imóvel como exemplo e ele é salvo.
+Em seguida é aplicado o método getById.<br>
+
+Por fim é analisado se:
+  - O resultado retornado do getById não é null
+  - Se o id retornado é igual ao requisitado
+  
+`getById_throwException_whenPropertyNotExist`<br name="getByIdProperty2">
+Testa o caso do método getById, de quando o imóvel não existe e lança uma exceção.
+É gerado um imóvel sem Id e é esperado que quando for usado o método getById retorne uma exceção.<br>
+
+Por fim é analisado se:
+  - Se contém o Id não existente do imóvel na mensagem de erro
+  - Se o Status recebido é NOT FOUND
+  
+`save_returnProperty_whenNewProperty`<br name="saveProperty1">
+Testa o caso do método save, quando é adicionado um novo imóvel e o mesmo é retornado.
+É gerado um novo imóvel e nele é aplicado o método save.<br>
+
+Por fim é analisado se:
+  - O resultado retornado do save não é null
+  
+`save_throwException_whenNull`<br name="saveProperty2">
+Testa o caso do método save, quando o parâmetro passado é null e lança uma exceção.
+É verificado se a exceção é lançada quando o parâemtro é null.<br>
