@@ -190,6 +190,19 @@ public class PropertyIntegrationTest {
     }
 
     @Test
+    public void postSaveProperty_returnProperty_whenDistrictIdNoExist() throws Exception {
+        PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
+        newProperty.setDistrictId(250L);
+
+        mockMvc.perform(post("/api/v1/property/")
+                .content(mapper.writeValueAsString(newProperty))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.name").value("DistrictNotFoundException"))
+                .andExpect(jsonPath("$.description", containsString("bairro")));
+    }
+
+    @Test
     public void postSaveProperty_returnBadRequest_whenPropNameNull() throws Exception {
         PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
         newProperty.setPropName(null);
