@@ -41,6 +41,83 @@ API REST desenvolvida pelo grupo Beta Campers para o Desafio Spring durante o IT
 
 ## Imóveis
 
+`POST /api/v1/property` <br name="propertyArea">
+Cadastra um novo imóvel.
+<pre><code><b>Payload Example:</b>
+{
+        "propName": "Casa A",
+        "districtId": 1,
+        "propRooms": [
+            {
+                "roomName": "Quarto de solteiro",
+                "roomWidth": 2.5,
+                "roomLength": 4.2
+            },
+            {
+                "roomName": "Quarto de casal",
+                "roomWidth": 3.5,
+                "roomLength": 4.6
+            },
+            {
+                "roomName": "Cozinha",
+                "roomWidth": 3.6,
+                "roomLength": 4.8
+            },
+            {
+                "roomName": "Banheiro",
+                "roomWidth": 1.8,
+                "roomLength": 2.4
+            }
+        ]
+ }
+    
+<b>Response:</b>
+
+{
+    "propId": 1,
+    "propName": "Casa A",
+    "propDistrict": {
+        "districtId": 1,
+        "districtName": "lalala",
+        "valueDistrictM2": 12
+    },
+    "propRooms": [
+        {
+            "roomName": "Quarto de solteiro",
+            "roomWidth": 2.5,
+            "roomLength": 4.2
+        },
+        {
+            "roomName": "Quarto de casal",
+            "roomWidth": 3.5,
+            "roomLength": 4.6
+        },
+        {
+            "roomName": "Cozinha",
+            "roomWidth": 3.6,
+            "roomLength": 4.8
+        },
+        {
+            "roomName": "Banheiro",
+            "roomWidth": 1.8,
+            "roomLength": 2.4
+        }
+    ]
+}
+</code></pre>
+- Será validado se:<br>
+  - O nome do imóvel não está vazio<br>
+  - O nome do imóvel começa com letra maiúscula<br>
+  - O nome do imóvel não excede o limite de 30 caracteres<br>
+  - O nome do bairro não está vazio<br>
+  - O imóvel tem pelo menos um cômodo<br>
+  - O nome do cômodo não pode estar vazio<br>
+  - O nome do cômodo começa com letra maiúscula<br>
+  - O nome do cômodo não excede o limite de 30 caracteres<br>
+  - A largura do cômodo não está vazia<br>
+  - A largura do cômodo não excede o limite de 25 metros<br>
+  - O comprimento do cômodo não excede 33 metros<br>
+
 `GET /api/v1/1/area` <br name="propertyArea">
 Retorna a área de um imóvel.
 <pre><code><b>Response:</b>
@@ -155,16 +232,6 @@ Retorna todos os imóveis.
                 "roomLength": 2.2
             }
         ]
-    },
-    {
-        "propId": 4,
-        "propName": "Apartamento 08",
-        "propDistrict": {
-            "districtId": 3,
-            "districtName": "Passo D'areia",
-            "valueDistrictM2": 10
-        },
-        "propRooms": []
     }
 ]
 </code></pre>
@@ -179,13 +246,20 @@ Cadastra um novo bairro.
     "valueDistrictM2" : "12"
     }
     
-    <b>Response:</b>
+<b>Response:</b>
     {
     "districtId": 1,
     "districtName": "Centro",
     "valueDistrictM2": 70
     }
     </code></pre>
+    
+- Será validado se:<br>
+  - O nome do bairro não está vazio<br>
+  - O nome do bairro começa com letra maiúscula
+  - O nome do imóvel não excede o limite de 45 caracteres
+  - O valor do m2 do bairro não está vazio
+  - O valor do m2 não excede 13 dígitos e 2 casas decimais
 
 `GET /api/v1/1/district/1` <br name="getDistrict">
 Retorna o bairro de acordo com o Id passado.
