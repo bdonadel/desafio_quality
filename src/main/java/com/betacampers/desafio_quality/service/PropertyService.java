@@ -82,8 +82,4 @@ public class PropertyService implements IPropertyService {
         return property.getPropRooms().stream().map(RoomResponseDto::new).collect(Collectors.toList());
     }
 
-    @Override
-    public List<Property> getAllProperties() {
-        return propertyRepository.getAll();
-    }
 }

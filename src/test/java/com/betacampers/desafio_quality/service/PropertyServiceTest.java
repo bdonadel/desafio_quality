@@ -1,16 +1,15 @@
 package com.betacampers.desafio_quality.service;
 
+import com.betacampers.desafio_quality.dto.PropertyRequestDto;
 import com.betacampers.desafio_quality.dto.RoomResponseDto;
-import com.betacampers.desafio_quality.exception.PropertyNotFoundException;
 import com.betacampers.desafio_quality.exception.PropertyWithoutRoomException;
 import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.model.Room;
+import com.betacampers.desafio_quality.repository.IDistrictRepository;
 import com.betacampers.desafio_quality.repository.IPropertyRepository;
 import com.betacampers.desafio_quality.util.TestUtilsGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -24,7 +23,6 @@ import org.mockito.quality.Strictness;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -39,10 +37,32 @@ class PropertyServiceTest {
     @Mock
     IPropertyRepository propertyRepository;
 
+    @Mock
+    IDistrictRepository districtRepository;
+
     @BeforeEach
     public void setup() {
         BDDMockito.when(propertyRepository.getById(ArgumentMatchers.anyLong()))
                 .thenReturn(TestUtilsGenerator.getNewProperty());
+    }
+
+    @Test
+    void saveProperty_returnProperty_whenNewProperty() {
+        PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
+        when(districtRepository.getById(ArgumentMatchers.anyLong()))
+                .thenReturn(TestUtilsGenerator.getNewDistrictWithId());
+
+        when(propertyRepository.save(ArgumentMatchers.any(Property.class)))
+                .thenReturn(TestUtilsGenerator.getNewProperty(TestUtilsGenerator.getNewDistrictWithId(),
+                        newProperty.getPropRooms().get(0), newProperty.getPropRooms().get(1)));
+
+        Property property = service.saveProperty(newProperty);
+
+        assertThat(property.getPropId()).isPositive();
+        Assertions.assertEquals(property.getPropName(), newProperty.getPropName());
+        Assertions.assertEquals(property.getPropRooms().get(0), newProperty.getPropRooms().get(0));
+        Assertions.assertEquals(property.getPropRooms().get(1), newProperty.getPropRooms().get(1));
+        Assertions.assertEquals(property.getPropDistrict().getDistrictId(), newProperty.getDistrictId());
     }
 
     @Test

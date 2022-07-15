@@ -62,14 +62,6 @@ public class PropertyController {
         return ResponseEntity.ok(propertyService.getRoomsArea(id));
     }
 
-    /**
-     * Método do Controller que retorna lista de imóveis
-     * @return Lista de Property.
-     */
-    @GetMapping("/properties")
-    public List<Property> getAllProperties() {
-        return propertyService.getAllProperties();
-    }
 
     /**
      * Método do Controller que recebe um imóvel e envia ao service para salvá-lo.

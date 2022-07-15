@@ -20,7 +20,7 @@ public class Room {
     private String roomName;
 
     @Positive(message = "A largura do cômodo não pode estar vazia.")
-    @DecimalMax(value = "25.0", message = "Largura máxima permitida por cômodo é de 25 metros.")
+    @DecimalMax(value = "25.0", message = "A largura máxima permitida por cômodo é de 25 metros.")
     private double roomWidth;
 
     @Positive(message = "O comprimento do cômodo não pode estar vazio.")

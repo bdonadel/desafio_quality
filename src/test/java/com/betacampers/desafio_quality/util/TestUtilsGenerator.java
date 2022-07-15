@@ -53,7 +53,31 @@ public class TestUtilsGenerator {
 
 
     public static Property getNewProperty() {
-        return getNewProperty(new Room("Sala", 10, 10), new Room("Quarto", 20, 20));
+        return getNewProperty(getRooms().get(0), getRooms().get(1));
+    }
+
+    public static Property getNewProperty(Room... rooms) {
+        District district = new District(1L, "Centro", new BigDecimal("10"));
+        return getNewProperty(district, rooms);
+    }
+
+    public static Property getNewProperty(District district) {
+        List<Room> rooms = getRooms();
+        return new Property(1L, "Casa", district, rooms);
+    }
+
+    public static Property getNewProperty(District district, Room... rooms) {
+        return new Property(1L, "Casa", district, List.of(rooms));
+    }
+
+    public static Property getPropertyWithoutRoom() {
+        var district = new District(2L, "Jardim Paulista", new BigDecimal("5"));
+        return new Property(3L, "Casa", district, new ArrayList<>());
+
+    }
+
+    public static PropertyRequestDto getNewPropertyRequest() {
+        return new PropertyRequestDto("Casa", 1L, getRooms());
     }
 
     public static District getNewDistrict() {
@@ -64,25 +88,10 @@ public class TestUtilsGenerator {
         return new District(1L, "Bairrão", new BigDecimal(10));
     }
 
-    public static Property getNewProperty(Room... rooms) {
-        District district = new District(1L, "Centro", new BigDecimal("10"));
-        return getNewProperty(district, rooms);
-    }
-
-    public static Property getNewProperty(District district, Room... rooms) {
-        return new Property(1L, "Casa", district, List.of(rooms));
-    }
-
-    public static Property getNewProperty(District district) {
+    public static List<Room> getRooms() {
         List<Room> rooms = new ArrayList<>();
         rooms.add(new Room("Cozinha", 4, 3.5));
         rooms.add(new Room("Quarto", 2.5, 3.5));
-        return new Property(1L, "Casa", district, rooms);
-    }
-
-    public static Property getPropertyWithoutRoom() {
-        var district = new District(2L, "Jardim Paulista", new BigDecimal("5"));
-        return new Property(3L, "Casa", district, new ArrayList<>());
-
+        return rooms;
     }
 }
