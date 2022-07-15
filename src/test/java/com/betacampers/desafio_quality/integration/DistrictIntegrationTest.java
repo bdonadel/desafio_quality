@@ -67,20 +67,6 @@ public class DistrictIntegrationTest {
     }
 
     @Test
-    public void postCreateDistrict_returnStatusBadRequest_whenDistrictSameName() {
-        District district = TestUtilsGenerator.getNewDistrict();
-        districtRepository.save(district);
-        district.setDistrictId(null);
-        String baseUrl = "http://localhost:" + port + "/api/v1/district";
-        HttpEntity<District> httpEntity = new HttpEntity<>(district);
-
-        ResponseEntity<District> response = testRestTemplate.exchange(baseUrl,
-                HttpMethod.POST, httpEntity, District.class);
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-    }
-
-    @Test
     public void getFindById_returnDistrict_whenDistrictExist() {
         District district = TestUtilsGenerator.getNewDistrict();
         district = districtRepository.save(district);
