@@ -39,11 +39,6 @@ public class PropertyController {
         return ResponseEntity.ok(propertyService.getRoomsArea(id));
     }
 
-    @GetMapping("/properties")
-    public List<Property> getAllProperties() {
-        return propertyService.getAllProperties();
-    }
-
     @PostMapping("/property")
     public ResponseEntity<Property> saveProperty(@RequestBody @Valid PropertyRequestDto property) {
         return ResponseEntity.status(HttpStatus.CREATED).body(propertyService.saveProperty(property));

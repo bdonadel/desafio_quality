@@ -44,9 +44,4 @@ public interface IPropertyService {
      */
     List<RoomResponseDto> getRoomsArea(Long propertyId);
 
-    /**
-     * Metódo do service responsável por retornar todos imóveis.
-     * @return Lista de Property.
-     */
-    List<Property> getAllProperties();
 }
