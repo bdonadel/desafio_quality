@@ -25,64 +25,79 @@ class DistrictRepositoryTest {
 
     @Test
     void getById_returnDistrict_whenDistrictExists() {
-        District district = TestUtilsGenerator.getNewDistrict();
-        District savedDistrict = districtRepository.save(district);
+        // Arrange
+        District savedDistrict = districtRepository.save(TestUtilsGenerator.getNewDistrict());
 
+        // Act
         District foundDistrict = districtRepository.getById(savedDistrict.getDistrictId());
 
+        // Assert
         assertThat(foundDistrict).isNotNull();
-        assertThat(foundDistrict.getDistrictId()).isEqualTo(savedDistrict.getDistrictId());
-        assertThat(foundDistrict.getDistrictName()).isEqualTo(savedDistrict.getDistrictName());
+        assertEquals(foundDistrict.getDistrictId(), savedDistrict.getDistrictId());
+        assertEquals(foundDistrict.getDistrictName(), savedDistrict.getDistrictName());
+        assertEquals(foundDistrict.getValueDistrictM2(), savedDistrict.getValueDistrictM2());
     }
 
     @Test
     void getById_throwException_whenDistrictNotExist() {
+        // Arrange
         District district = TestUtilsGenerator.getNewDistrictWithId();
 
+        // Act
         DistrictNotFoundException exception = Assertions.assertThrows(DistrictNotFoundException.class, () -> {
             districtRepository.getById(district.getDistrictId());
         });
 
+        // Assert
         assertThat(exception.getError().getDescription()).contains(district.getDistrictId().toString());
-        assertThat(exception.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertEquals(exception.getStatus(), HttpStatus.NOT_FOUND);
     }
 
     @Test
     void save_returnDistrict_whenNewDistrict() {
+        // Arrange
         District district = TestUtilsGenerator.getNewDistrict();
 
+        // Act
         District savedDistrict = districtRepository.save(district);
 
+        // Assert
         assertThat(savedDistrict).isNotNull();
         assertThat(savedDistrict.getDistrictId()).isPositive();
-        assertThat(savedDistrict.getDistrictName()).isEqualTo(district.getDistrictName());
+        assertEquals(savedDistrict.getDistrictId(), district.getDistrictId());
+        assertEquals(savedDistrict.getDistrictName(), district.getDistrictName());
+        assertEquals(savedDistrict.getValueDistrictM2(), district.getValueDistrictM2());
     }
 
     @Test
-    void save_updateDistrict_whenDistrictWithId() {
-        District district = TestUtilsGenerator.getNewDistrict();
+    void save_updatedDistrict_whenDistrictWithId() {
+        // Arrange
+        District savedDistrict = districtRepository.save(TestUtilsGenerator.getNewDistrict());
 
-        District savedDistrict = districtRepository.save(district);
-
+        // Act
         savedDistrict.setDistrictName("Novo nome");
         savedDistrict.setValueDistrictM2(new BigDecimal(233.0));
-
         District updatedDistrict = districtRepository.save(savedDistrict);
 
+        // Assert
         assertThat(updatedDistrict).isNotNull();
-        assertThat(updatedDistrict.getDistrictId()).isEqualTo(savedDistrict.getDistrictId());
-        assertThat(updatedDistrict.getDistrictName()).isEqualTo(savedDistrict.getDistrictName());
+        assertEquals(updatedDistrict.getDistrictId(), savedDistrict.getDistrictId());
+        assertEquals(updatedDistrict.getDistrictName(), savedDistrict.getDistrictName());
+        assertEquals(updatedDistrict.getValueDistrictM2(), savedDistrict.getValueDistrictM2());
     }
 
     @Test
     void save_throwException_whenDistrictIdExistsAndDistrictNotExist() {
+        // Arrange
         District district = TestUtilsGenerator.getNewDistrictWithId();
 
+        // Act
         DistrictNotFoundException exception = Assertions.assertThrows(DistrictNotFoundException.class, () -> {
             districtRepository.save(district);
         });
 
+        // Assert
         assertThat(exception.getError().getDescription()).contains(district.getDistrictId().toString());
-        assertThat(exception.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertEquals(exception.getStatus(), HttpStatus.NOT_FOUND);
     }
 }
