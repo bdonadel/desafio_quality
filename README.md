@@ -25,12 +25,16 @@ API REST desenvolvida pelo grupo Beta Campers para o Desafio Spring durante o IT
 
 - [Observações](#observações)
 - [Funcionalidades](#funcionalidades)
-- [Imóveis](#imoveis)
+- <a href="https://drive.google.com/file/d/1gCBrdi8smZKJKubESFuziZZ9NbGer9XZ/view?usp=sharing">Diagrama UML </a>
+- [Imóveis](#imóveis)
   - [Get - Retorna a área de um imóvel](#propertyArea)
   - [Get - Retorna o valor de um imóvel](#propertyValue)
   - [Get - Retorna o maior cômodo do imóvel](#biggestRoom)
   - [Get - Retorna informações do cômodo](#roomInfo)
   - [Get - Retorna todos os imóveis](#allProperties)
+- [Bairros](#bairros)
+  - [Post - Cadastra um novo bairro](#createDistrict)
+  - [Get - Retorna o bairro de acordo com o Id passado](#getDistrict)
 # Observações
 
 # Funcionalidades
@@ -165,3 +169,30 @@ Retorna todos os imóveis.
 ]
 </code></pre>
 
+## Bairros
+
+`POST /api/v1/1/district` <br name="createDistrict">
+Cadastra um novo bairro.
+<pre><code><b>Payload example:</b>
+    {
+    "districtName" : "Centro",
+    "valueDistrictM2" : "12"
+    }
+    
+    <b>Response:</b>
+    {
+    "districtId": 1,
+    "districtName": "Centro",
+    "valueDistrictM2": 70
+    }
+    </code></pre>
+
+`GET /api/v1/1/district/1` <br name="getDistrict">
+Retorna o bairro de acordo com o Id passado.
+<pre><code><b>Response:</b>
+{
+    "districtId": 1,
+    "districtName": "Centro",
+    "valueDistrictM2": 70
+}
+</code></pre>
