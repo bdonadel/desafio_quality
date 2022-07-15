@@ -12,7 +12,9 @@ import org.springframework.util.ResourceUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Properties;
 
 @Repository
 public class PropertyRepository implements IPropertyRepository {
@@ -47,11 +49,6 @@ public class PropertyRepository implements IPropertyRepository {
             throw new PropertyNotFoundException(propertyId);
         }
         return properties.get(propertyId);
-    }
-
-    @Override
-    public List<Property> getAll() {
-        return new ArrayList<>(properties.values());
     }
 
     private void loadData() {

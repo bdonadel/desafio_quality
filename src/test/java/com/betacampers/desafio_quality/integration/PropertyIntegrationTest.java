@@ -9,18 +9,24 @@ import com.betacampers.desafio_quality.repository.IDistrictRepository;
 import com.betacampers.desafio_quality.repository.IPropertyRepository;
 import com.betacampers.desafio_quality.util.TestUtilsGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Log4j2
 @SpringBootTest
 @AutoConfigureMockMvc
 public class PropertyIntegrationTest {
@@ -34,6 +40,8 @@ public class PropertyIntegrationTest {
     private IDistrictRepository districtRepository;
 
     private Property property;
+
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @BeforeEach
     public void setup() {
@@ -161,5 +169,218 @@ public class PropertyIntegrationTest {
     @Test
     public void getRoomsArea_returnStatusNotFound_whenPropertyDoesNotExist() throws Exception {
         mockMvc.perform(get("/api/v1/property/123/roomsArea")).andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void postSaveProperty_returnProperty_whenNewProperty() throws Exception {
+        PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
+
+        MvcResult response = mockMvc.perform(post("/api/v1/property/")
+                .content(mapper.writeValueAsString(newProperty))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.propName").value(newProperty.getPropName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.propDistrict.districtId").value(newProperty.getDistrictId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.propRooms[0].roomName").value(newProperty.getPropRooms().get(0).getRoomName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.propRooms[1].roomName").value(newProperty.getPropRooms().get(1).getRoomName()))
+                .andReturn();
+
+        assertThat(response.getResponse().getErrorMessage()).isNull();
+    }
+
+    @Test
+    public void postSaveProperty_returnProperty_whenDistrictIdNoExist() throws Exception {
+        PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
+        newProperty.setDistrictId(250L);
+
+        mockMvc.perform(post("/api/v1/property/")
+                .content(mapper.writeValueAsString(newProperty))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.name").value("DistrictNotFoundException"))
+                .andExpect(jsonPath("$.description", containsString("bairro")));
+    }
+
+    @Test
+    public void postSaveProperty_returnBadRequest_whenPropNameNull() throws Exception {
+        PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
+        newProperty.setPropName(null);
+
+        mockMvc.perform(post("/api/v1/property/")
+                .content(mapper.writeValueAsString(newProperty))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("estar vazio")));
+    }
+
+    @Test
+    public void postSaveProperty_returnBadRequest_whenPropNameLowerCase() throws Exception {
+        PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
+        newProperty.setPropName("casa");
+
+        mockMvc.perform(post("/api/v1/property/")
+                .content(mapper.writeValueAsString(newProperty))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("letra maiúscula")));
+    }
+
+    @Test
+    public void postSaveProperty_returnBadRequest_whenPropNameLarge() throws Exception {
+        PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
+        newProperty.setPropName("Lorem ipsum dolor sit amet cons");
+
+        mockMvc.perform(post("/api/v1/property/")
+                .content(mapper.writeValueAsString(newProperty))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("exceder 30 caracteres")));
+    }
+
+    @Test
+    public void postSaveProperty_returnBadRequest_whenDistrictIdIsNull() throws Exception {
+        PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
+        newProperty.setDistrictId(null);
+
+        mockMvc.perform(post("/api/v1/property/")
+                .content(mapper.writeValueAsString(newProperty))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("bairro")));
+    }
+
+    @Test
+    public void postSaveProperty_returnBadRequest_whenPropertyHasNoRooms() throws Exception {
+        PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
+        newProperty.setPropRooms(null);
+
+        mockMvc.perform(post("/api/v1/property/")
+                .content(mapper.writeValueAsString(newProperty))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("cômodo")));
+    }
+
+    @Test
+    public void postSaveProperty_returnBadRequest_whenRoomNameIsNull() throws Exception {
+        PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
+        newProperty.getPropRooms().get(0).setRoomName(null);
+
+        mockMvc.perform(post("/api/v1/property/")
+                .content(mapper.writeValueAsString(newProperty))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("estar vazio")));
+    }
+
+    @Test
+    public void postSaveProperty_returnBadRequest_whenRoomNameLowerCase() throws Exception {
+        PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
+        newProperty.getPropRooms().get(0).setRoomName("quarto");
+
+        mockMvc.perform(post("/api/v1/property/")
+                .content(mapper.writeValueAsString(newProperty))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("letra maiúscula")));
+    }
+
+    @Test
+    public void postSaveProperty_returnBadRequest_whenRoomNameLarge() throws Exception {
+        PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
+        newProperty.getPropRooms().get(0).setRoomName("Lorem ipsum dolor sit amet cons");
+
+        mockMvc.perform(post("/api/v1/property/")
+                .content(mapper.writeValueAsString(newProperty))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("exceder 30 caracteres")));
+    }
+
+    @Test
+    public void postSaveProperty_returnBadRequest_whenRoomWidthZero() throws Exception {
+        PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
+        newProperty.getPropRooms().get(0).setRoomWidth(0);
+
+        mockMvc.perform(post("/api/v1/property/")
+                .content(mapper.writeValueAsString(newProperty))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("largura do cômodo")));
+    }
+
+    @Test
+    public void postSaveProperty_returnBadRequest_whenRoomWidthNegative() throws Exception {
+        PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
+        newProperty.getPropRooms().get(0).setRoomWidth(-5);
+
+        mockMvc.perform(post("/api/v1/property/")
+                .content(mapper.writeValueAsString(newProperty))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("largura do cômodo")));
+    }
+
+    @Test
+    public void postSaveProperty_returnBadRequest_whenRoomWidthLarge() throws Exception {
+        PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
+        newProperty.getPropRooms().get(0).setRoomWidth(25.1);
+
+        mockMvc.perform(post("/api/v1/property/")
+                .content(mapper.writeValueAsString(newProperty))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("largura máxima")));
+    }
+
+    @Test
+    public void postSaveProperty_returnBadRequest_whenRoomLengthZero() throws Exception {
+        PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
+        newProperty.getPropRooms().get(0).setRoomLength(0);
+
+        mockMvc.perform(post("/api/v1/property/")
+                .content(mapper.writeValueAsString(newProperty))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("comprimento do cômodo")));
+    }
+
+    @Test
+    public void postSaveProperty_returnBadRequest_whenRoomLengthNegative() throws Exception {
+        PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
+        newProperty.getPropRooms().get(0).setRoomLength(-5);
+
+        mockMvc.perform(post("/api/v1/property/")
+                .content(mapper.writeValueAsString(newProperty))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("comprimento do cômodo")));
+    }
+
+    @Test
+    public void postSaveProperty_returnBadRequest_whenRoomLengthLarge() throws Exception {
+        PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
+        newProperty.getPropRooms().get(0).setRoomLength(33.1);
+
+        mockMvc.perform(post("/api/v1/property/")
+                .content(mapper.writeValueAsString(newProperty))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("comprimento máximo")));
     }
 }
