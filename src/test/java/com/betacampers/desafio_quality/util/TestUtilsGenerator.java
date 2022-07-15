@@ -1,12 +1,9 @@
 package com.betacampers.desafio_quality.util;
 
-import ch.qos.logback.core.net.ObjectWriter;
 import com.betacampers.desafio_quality.dto.PropertyRequestDto;
 import com.betacampers.desafio_quality.model.District;
 import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.model.Room;
-import com.betacampers.desafio_quality.repository.IDistrictRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ResourceUtils;
 
@@ -19,8 +16,6 @@ import java.util.Properties;
 
 public class TestUtilsGenerator {
     private static String SCOPE;
-    @Autowired
-    private IDistrictRepository districtRepository;
 
     public static void emptyUsersFile() {
         Properties properties = new Properties();
@@ -42,9 +37,11 @@ public class TestUtilsGenerator {
             e.printStackTrace();
         }
 
+        assert writerDistrict != null;
         writerDistrict.print("{}");
         writerDistrict.close();
 
+        assert writerProperty != null;
         writerProperty.print("{}");
         writerProperty.close();
     }

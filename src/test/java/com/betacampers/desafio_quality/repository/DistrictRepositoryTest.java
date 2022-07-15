@@ -44,9 +44,9 @@ class DistrictRepositoryTest {
         District district = TestUtilsGenerator.getNewDistrictWithId();
 
         // Act
-        DistrictNotFoundException exception = Assertions.assertThrows(DistrictNotFoundException.class, () -> {
-            districtRepository.getById(district.getDistrictId());
-        });
+        DistrictNotFoundException exception = Assertions.assertThrows(
+                DistrictNotFoundException.class,
+                () -> districtRepository.getById(district.getDistrictId()));
 
         // Assert
         assertThat(exception.getError().getDescription()).contains(district.getDistrictId().toString());
@@ -76,7 +76,7 @@ class DistrictRepositoryTest {
 
         // Act
         savedDistrict.setDistrictName("Novo nome");
-        savedDistrict.setValueDistrictM2(new BigDecimal(233.0));
+        savedDistrict.setValueDistrictM2(new BigDecimal("233.0"));
         District updatedDistrict = districtRepository.save(savedDistrict);
 
         // Assert
@@ -92,9 +92,9 @@ class DistrictRepositoryTest {
         District district = TestUtilsGenerator.getNewDistrictWithId();
 
         // Act
-        DistrictNotFoundException exception = Assertions.assertThrows(DistrictNotFoundException.class, () -> {
-            districtRepository.save(district);
-        });
+        DistrictNotFoundException exception = Assertions.assertThrows(
+                DistrictNotFoundException.class,
+                () -> districtRepository.save(district));
 
         // Assert
         assertThat(exception.getError().getDescription()).contains(district.getDistrictId().toString());

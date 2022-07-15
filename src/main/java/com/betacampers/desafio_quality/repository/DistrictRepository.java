@@ -72,7 +72,7 @@ public class DistrictRepository implements IDistrictRepository {
         boolean ret = false;
         try {
             ret = this.getById(district.getDistrictId()) != null;
-        } catch (DistrictNotFoundException e) {
+        } catch (DistrictNotFoundException ignored) {
         }
 
         return ret;
@@ -85,8 +85,7 @@ public class DistrictRepository implements IDistrictRepository {
         File file;
         try {
             file = ResourceUtils.getFile("./src/" + SCOPE + "/resources/district.json");
-            loadedData = objectMapper.readValue(file, new TypeReference<HashMap<Long, District>>() {
-            });
+            loadedData = objectMapper.readValue(file, new TypeReference<>() {});
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("Failed while initializing DB, check your resources files");

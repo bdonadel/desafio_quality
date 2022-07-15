@@ -18,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -52,9 +51,7 @@ public class PropertyIntegrationTest {
         // Arrange
         double correctValue = property.getPropRooms()
                 .stream()
-                .mapToDouble(r -> {
-                    return r.getRoomLength() * r.getRoomWidth();
-                })
+                .mapToDouble(r -> r.getRoomLength() * r.getRoomWidth())
                 .sum();
 
         // Act
@@ -176,10 +173,10 @@ public class PropertyIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.propName").value(newProperty.getPropName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.propDistrict.districtId").value(newProperty.getDistrictId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.propRooms[0].roomName").value(newProperty.getPropRooms().get(0).getRoomName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.propRooms[1].roomName").value(newProperty.getPropRooms().get(1).getRoomName()))
+                .andExpect(jsonPath("$.propName").value(newProperty.getPropName()))
+                .andExpect(jsonPath("$.propDistrict.districtId").value(newProperty.getDistrictId()))
+                .andExpect(jsonPath("$.propRooms[0].roomName").value(newProperty.getPropRooms().get(0).getRoomName()))
+                .andExpect(jsonPath("$.propRooms[1].roomName").value(newProperty.getPropRooms().get(1).getRoomName()))
                 .andReturn();
 
         assertThat(response.getResponse().getErrorMessage()).isNull();

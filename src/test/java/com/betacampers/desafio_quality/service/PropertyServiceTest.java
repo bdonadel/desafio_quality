@@ -110,9 +110,7 @@ class PropertyServiceTest {
         when(propertyRepository.getById(property.getPropId())).thenReturn(property);
         double correctValue = property.getPropRooms()
                 .stream()
-                .mapToDouble(r -> {
-                    return r.getRoomLength() * r.getRoomWidth();
-                })
+                .mapToDouble(r -> r.getRoomLength() * r.getRoomWidth())
                 .sum();
 
         // Act
@@ -132,9 +130,9 @@ class PropertyServiceTest {
         when(propertyRepository.getById(property.getPropId())).thenReturn(property);
 
         // Act
-        PropertyWithoutRoomException exception = Assertions.assertThrows(PropertyWithoutRoomException.class, () -> {
-            service.getPropertyArea(property.getPropId());
-        });
+        PropertyWithoutRoomException exception = Assertions.assertThrows(
+                PropertyWithoutRoomException.class,
+                () -> service.getPropertyArea(property.getPropId()));
 
         //Assert
         assertThat(exception.getError().getDescription()).contains("" + property.getPropId());
@@ -172,9 +170,9 @@ class PropertyServiceTest {
         when(propertyRepository.getById(property.getPropId())).thenReturn(property);
 
         // Act
-        PropertyWithoutRoomException exception = Assertions.assertThrows(PropertyWithoutRoomException.class, () -> {
-            service.getLargestRoom(property.getPropId());
-        });
+        PropertyWithoutRoomException exception = Assertions.assertThrows(
+                PropertyWithoutRoomException.class,
+                () -> service.getLargestRoom(property.getPropId()));
 
         // Assert
         assertThat(exception.getError().getDescription()).contains("" + property.getPropId());

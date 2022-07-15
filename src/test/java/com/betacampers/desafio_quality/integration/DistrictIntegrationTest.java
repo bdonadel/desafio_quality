@@ -148,7 +148,7 @@ public class DistrictIntegrationTest {
     @Test
     public void postCreateDistrict_returnStatusBadRequest_whenDistrictValueHasMoreThan2DecimalPlaces() throws Exception {
         District district = TestUtilsGenerator.getNewDistrict();
-        district.setValueDistrictM2(new BigDecimal(13.768));
+        district.setValueDistrictM2(new BigDecimal("13.768"));
 
         mockMvc.perform(post("/api/v1/district")
                         .content(mapper.writeValueAsString(district))

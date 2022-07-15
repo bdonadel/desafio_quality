@@ -61,8 +61,7 @@ public class PropertyRepository implements IPropertyRepository {
         File file;
         try {
             file = ResourceUtils.getFile("./src/" + SCOPE + "/resources/property.json");
-            loadedData = objectMapper.readValue(file, new TypeReference<HashMap<Long, Property>>() {
-            });
+            loadedData = objectMapper.readValue(file, new TypeReference<>() {});
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("Failed while initializing DB, check your resources files");
