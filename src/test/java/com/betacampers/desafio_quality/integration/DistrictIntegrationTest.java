@@ -1,34 +1,40 @@
 package com.betacampers.desafio_quality.integration;
 
+import com.betacampers.desafio_quality.dto.RoomResponseDto;
 import com.betacampers.desafio_quality.model.District;
 import com.betacampers.desafio_quality.repository.IDistrictRepository;
 import com.betacampers.desafio_quality.util.TestUtilsGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultMatcher;
+
+import javax.validation.constraints.*;
+import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@Log4j2
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class DistrictIntegrationTest {
 
     @Autowired
-    TestRestTemplate testRestTemplate;
-
-    @LocalServerPort
-    private int port;
+    private MockMvc mockMvc;
 
     @Autowired
     private IDistrictRepository districtRepository;
+
+    final ObjectMapper mapper = new ObjectMapper();
 
     @BeforeEach
     public void setup() {
@@ -36,48 +42,17 @@ public class DistrictIntegrationTest {
     }
 
     @Test
-    public void postCreateDistrict_saveDistrict_whenNewDistrict() {
-        District newDistrict = TestUtilsGenerator.getNewDistrict();
-        String baseUrl = "http://localhost:" + port + "/api/v1/district";
-        HttpEntity<District> httpEntity = new HttpEntity<>(newDistrict);
-
-        ResponseEntity<District> response = testRestTemplate.exchange(baseUrl,
-                HttpMethod.POST, httpEntity, District.class);
-
-        District district = response.getBody();
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        assertThat(district).isNotNull();
-        assertThat(district.getDistrictId()).isPositive();
-        assertThat(district.getDistrictName()).isEqualTo(newDistrict.getDistrictName());
-        assertThat(district.getValueDistrictM2()).isEqualTo(newDistrict.getValueDistrictM2());
-    }
-
-    @Test
-    public void postCreateDistrict_returnStatusBadRequest_whenDistrictWithId() {
+    public void getFindById_returnDistrict_whenDistrictExist() throws Exception {
         District district = TestUtilsGenerator.getNewDistrict();
         district = districtRepository.save(district);
-        String baseUrl = "http://localhost:" + port + "/api/v1/district";
-        HttpEntity<District> httpEntity = new HttpEntity<>(district);
 
-        ResponseEntity<District> response = testRestTemplate.exchange(baseUrl,
-                HttpMethod.POST, httpEntity, District.class);
+        MvcResult response = mockMvc.perform(get("/api/v1/district/"+ district.getDistrictId()))
+                .andExpect(status().isOk())
+                .andReturn();
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-    }
+        String json = response.getResponse().getContentAsString();
+        District districtResponse = new ObjectMapper().readValue(json, District.class);
 
-    @Test
-    public void getFindById_returnDistrict_whenDistrictExist() {
-        District district = TestUtilsGenerator.getNewDistrict();
-        district = districtRepository.save(district);
-        String baseUrl = "http://localhost:" + port + "/api/v1/district";
-
-        ResponseEntity<District> response = testRestTemplate.exchange(baseUrl + "/" + district.getDistrictId(),
-                HttpMethod.GET, null, District.class);
-
-        District districtResponse = response.getBody();
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(districtResponse).isNotNull();
         assertThat(districtResponse.getDistrictId()).isEqualTo(district.getDistrictId());
         assertThat(districtResponse.getDistrictName()).isEqualTo(district.getDistrictName());
@@ -85,13 +60,105 @@ public class DistrictIntegrationTest {
     }
 
     @Test
-    public void getFindById_returnNotFound_whenDistrictNotExist() {
-        String baseUrl = "http://localhost:" + port + "/api/v1/district";
+    public void getFindById_returnNotFound_whenDistrictNotExist() throws Exception {
 
-        ResponseEntity<District> response = testRestTemplate.exchange(baseUrl + "/1",
-                HttpMethod.GET, null, District.class);
-        log.info(response.getBody() + "body");
+        mockMvc.perform(get("/api/v1/district/1"))
+                .andExpect(status().isNotFound());
+    }
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+
+    @Test
+    public void postCreateDistrict_saveDistrict_whenNewDistrict() throws Exception {
+        District newDistrict = TestUtilsGenerator.getNewDistrict();
+
+        MvcResult response = mockMvc.perform(post("/api/v1/district")
+                .content(mapper.writeValueAsString(newDistrict))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        String json = response.getResponse().getContentAsString();
+        District district = new ObjectMapper().readValue(json, District.class);
+
+        assertThat(district).isNotNull();
+        assertThat(district.getDistrictId()).isPositive();
+        assertThat(district.getDistrictName()).isEqualTo(newDistrict.getDistrictName());
+        assertThat(district.getValueDistrictM2()).isEqualTo(newDistrict.getValueDistrictM2());
+    }
+
+    @Test
+    public void postCreateDistrict_returnStatusBadRequest_whenDistrictWithId() throws Exception {
+        District district = TestUtilsGenerator.getNewDistrict();
+        district = districtRepository.save(district);
+
+        mockMvc.perform(post("/api/v1/district")
+                .content(mapper.writeValueAsString(district))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void postCreateDistrict_returnStatusBadRequest_whenDistrictNameIsBlank() throws Exception {
+        District district = TestUtilsGenerator.getNewDistrict();
+        district.setDistrictName(null);
+
+        mockMvc.perform(post("/api/v1/district")
+                .content(mapper.writeValueAsString(district))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("nome")));
+    }
+
+    @Test
+    public void postCreateDistrict_returnStatusBadRequest_whenDistrictNameFirstLetterNotCapital() throws Exception {
+        District district = TestUtilsGenerator.getNewDistrict();
+        district.setDistrictName("bairro");
+
+        mockMvc.perform(post("/api/v1/district")
+                .content(mapper.writeValueAsString(district))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("letra maiúscula")));
+    }
+
+    @Test
+    public void postCreateDistrict_returnStatusBadRequest_whenDistrictNameLengthGreaterThan45() throws Exception {
+        District district = TestUtilsGenerator.getNewDistrict();
+        district.setDistrictName("bairrobairrobairrobairrobairrobairrobairrobairrobairrobairro");
+
+        mockMvc.perform(post("/api/v1/district")
+                .content(mapper.writeValueAsString(district))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("45")));
+    }
+
+    @Test
+    public void postCreateDistrict_returnStatusBadRequest_whenDistrictValueIsEmpty() throws Exception {
+        District district = TestUtilsGenerator.getNewDistrict();
+        district.setValueDistrictM2(null);
+
+        mockMvc.perform(post("/api/v1/district")
+                .content(mapper.writeValueAsString(district))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("metro quadrado")));
+    }
+
+    @Test
+    public void postCreateDistrict_returnStatusBadRequest_whenDistrictValueHasMoreThan2DecimalPlaces() throws Exception {
+        District district = TestUtilsGenerator.getNewDistrict();
+        district.setValueDistrictM2(new BigDecimal(13.768));
+
+        mockMvc.perform(post("/api/v1/district")
+                .content(mapper.writeValueAsString(district))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.description", containsString("2 casas decimais")));
     }
 }
