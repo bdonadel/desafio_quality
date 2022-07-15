@@ -19,7 +19,6 @@ import java.util.Properties;
 
 public class TestUtilsGenerator {
     private static String SCOPE;
-    private static ObjectWriter mapper;
     @Autowired
     private IDistrictRepository districtRepository;
 

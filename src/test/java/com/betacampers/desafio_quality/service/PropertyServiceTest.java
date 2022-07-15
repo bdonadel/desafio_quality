@@ -133,7 +133,7 @@ class PropertyServiceTest {
 
         // Act
         PropertyWithoutRoomException exception = Assertions.assertThrows(PropertyWithoutRoomException.class, () -> {
-            double propertyArea = service.getPropertyArea(property.getPropId());
+            service.getPropertyArea(property.getPropId());
         });
 
         //Assert
@@ -173,7 +173,7 @@ class PropertyServiceTest {
 
         // Act
         PropertyWithoutRoomException exception = Assertions.assertThrows(PropertyWithoutRoomException.class, () -> {
-            RoomResponseDto largestRoom = service.getLargestRoom(property.getPropId());
+            service.getLargestRoom(property.getPropId());
         });
 
         // Assert

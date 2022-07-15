@@ -74,7 +74,7 @@ class PropertyRepositoryTest {
     @Test
     void save_throwException_whenNullParam() {
         // Arrange & Act
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
+        Assertions.assertThrows(RuntimeException.class, () -> {
             Property savedProperty = propertyRepository.save(null);
             assertThat(savedProperty).isNull();
         });

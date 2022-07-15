@@ -26,7 +26,4 @@ public class Room {
     @Positive(message = "O comprimento do cômodo não pode estar vazio.")
     @DecimalMax(value = "33.0", message = "O comprimento máximo permitido por cômodo é de 33 metros.")
     private double roomLength;
-
-    // TODO testar validations apos modificacoes de endpoint + verificar exceptions
-
 }

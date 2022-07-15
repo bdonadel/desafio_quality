@@ -26,6 +26,3 @@ public class Property {
         propRooms = propertyRequest.getPropRooms();
     }
 }
-
-// TODO ver com Joice sobre validação da lista
-// TODO testar validations apos modificacoes de endpoint + verificar exceptions
