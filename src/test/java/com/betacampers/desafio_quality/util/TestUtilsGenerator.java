@@ -81,11 +81,11 @@ public class TestUtilsGenerator {
     }
 
     public static District getNewDistrict() {
-        return new District("Bairrão", new BigDecimal(10));
+        return new District("Bairro", new BigDecimal(10));
     }
 
     public static District getNewDistrictWithId() {
-        return new District(1L, "Bairrão", new BigDecimal(10));
+        return new District(1L, "Bairro", new BigDecimal(10));
     }
 
     public static List<Room> getRooms() {
