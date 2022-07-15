@@ -35,6 +35,18 @@ API REST desenvolvida pelo grupo Beta Campers para o Desafio Quality focado em t
 - [Bairros](#bairros)
   - [Post - Cadastra um novo bairro](#addDistrict)
   - [Get - Retorna o bairro de acordo com o Id passado](#getDistrict)
+- [Testes](#testes)
+  - [Testes de Integração District]()
+  - [Testes de Integração Property]()
+  - [Testes Unitários Repositório District]()
+  - [Testes Unitários Repositório Property](#TURProperty) <br>
+    ⋆ [getById_returnDistrict_whenDistrictExists](#getByIdDistrict1) <br>
+    ⋆ [getById_throwException_whenDistrictNotExist](#getByIdDistrict2) <br>
+    ⋆ [save_returnDistrict_whenNewDistrict](#saveDistrict1) <br>
+    ⋆ [save_updateDistrict_whenDistrictWithId](#saveDistrict2) <br>
+    ⋆ [save_throwException_whenDistrictIdExistsAndDistrictNotExist](#saveDistrict3) <br>
+  - [Testes Unitários Service District]()
+  - [Testes Unitários Service Property]()
 # Observações
 
 # Funcionalidades
@@ -206,3 +218,53 @@ Retorna o bairro de acordo com o Id passado.
     "valueDistrictM2": 70
 }
 </code></pre>
+
+## Testes
+
+
+### Testes Unitários Repositório Property <br name="TURProperty">
+
+`getById_returnDistrict_whenDistrictExists`<br name="getByIdDistrict1">
+Testa o caso do método getById, quando o bairro existe e deve retornar o bairro. 
+É gerado um bairro como exemplo e ele é salvo.
+Em seguida é aplicado o método getById.<br>
+
+Por fim é analisado se:
+  - O resultado retornado do getById não é null
+  - Se o id retornado é igual ao requisitado
+  - Se o nome retornado é igual ao requisitado
+
+`getById_throwException_whenDistrictNotExist`<br name="getByIdDistrict2">
+Testa o caso do método getById, de quando o bairro não existe e lança uma exceção.
+É gerado um bairro sem Id e é esperado que quando for usado o método getById retorne uma exceção.<br>
+
+Por fim é analisado se:
+  - Se contém o Id do bairro na mensagem de erro
+  - Se o Status recebido é NOT FOUND
+
+`save_returnDistrict_whenNewDistrict`<br name="saveDistrict1">
+Testa o caso do método save, quando é adicionado um novo bairro e o mesmo é retornado.
+É gerado um novo bairro e ele é aplicado o método save.<br>
+
+Por fim é analisado se:
+  - O resultado retornado do save não é null
+  - Se o id retornado é positivo
+  - Se o nome do bairro retornado é o mesmo do bairro criado.
+
+`save_updateDistrict_whenDistrictWithId`<br name="saveDistrict2">
+Testa o caso do método save, quando é o bairro existe e é atualizado.
+É gerado um novo bairro com Id e ele é salvo.
+É modificado o nome e o valor é salvo.<br>
+
+Por fim é analisado se:
+  - O resultado retornado do save não é null
+  - Se o Id retornado continua sendo o mesmo
+  - Se o nome do bairro foi atualizado
+
+`save_throwException_whenDistrictIdExistsAndDistrictNotExist`<br name="saveDistrict3">
+Testa o caso do método save, de quando o Id já existe e o bairro não existe e lança uma exceção.
+É gerado um bairro com Id e é esperado que quando for usado o método save retorne uma exceção.<br>
+
+Por fim é analisado se:
+  - Se contém o Id do bairro na mensagem de erro
+  - Se o Status recebido é NOT FOUND
