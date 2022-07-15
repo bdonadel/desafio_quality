@@ -1,6 +1,5 @@
 package com.betacampers.desafio_quality.integration;
 
-import com.betacampers.desafio_quality.dto.RoomResponseDto;
 import com.betacampers.desafio_quality.model.District;
 import com.betacampers.desafio_quality.repository.IDistrictRepository;
 import com.betacampers.desafio_quality.util.TestUtilsGenerator;
@@ -10,31 +9,28 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.*;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultMatcher;
 
-import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 public class DistrictIntegrationTest {
 
+    final ObjectMapper mapper = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private IDistrictRepository districtRepository;
-
-    final ObjectMapper mapper = new ObjectMapper();
 
     @BeforeEach
     public void setup() {
@@ -46,7 +42,7 @@ public class DistrictIntegrationTest {
         District district = TestUtilsGenerator.getNewDistrict();
         district = districtRepository.save(district);
 
-        MvcResult response = mockMvc.perform(get("/api/v1/district/"+ district.getDistrictId()))
+        MvcResult response = mockMvc.perform(get("/api/v1/district/" + district.getDistrictId()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -72,8 +68,8 @@ public class DistrictIntegrationTest {
         District newDistrict = TestUtilsGenerator.getNewDistrict();
 
         MvcResult response = mockMvc.perform(post("/api/v1/district")
-                .content(mapper.writeValueAsString(newDistrict))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(newDistrict))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -92,8 +88,8 @@ public class DistrictIntegrationTest {
         district = districtRepository.save(district);
 
         mockMvc.perform(post("/api/v1/district")
-                .content(mapper.writeValueAsString(district))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(district))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
@@ -103,8 +99,8 @@ public class DistrictIntegrationTest {
         district.setDistrictName(null);
 
         mockMvc.perform(post("/api/v1/district")
-                .content(mapper.writeValueAsString(district))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(district))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("nome")));
@@ -116,8 +112,8 @@ public class DistrictIntegrationTest {
         district.setDistrictName("bairro");
 
         mockMvc.perform(post("/api/v1/district")
-                .content(mapper.writeValueAsString(district))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(district))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("letra maiúscula")));
@@ -129,8 +125,8 @@ public class DistrictIntegrationTest {
         district.setDistrictName("bairrobairrobairrobairrobairrobairrobairrobairrobairrobairro");
 
         mockMvc.perform(post("/api/v1/district")
-                .content(mapper.writeValueAsString(district))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(district))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("45")));
@@ -142,8 +138,8 @@ public class DistrictIntegrationTest {
         district.setValueDistrictM2(null);
 
         mockMvc.perform(post("/api/v1/district")
-                .content(mapper.writeValueAsString(district))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(district))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("metro quadrado")));
@@ -155,8 +151,8 @@ public class DistrictIntegrationTest {
         district.setValueDistrictM2(new BigDecimal(13.768));
 
         mockMvc.perform(post("/api/v1/district")
-                .content(mapper.writeValueAsString(district))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(district))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("2 casas decimais")));

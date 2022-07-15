@@ -24,6 +24,7 @@ public class PropertyController {
 
     /**
      * Método do Controller que retorna o valor da área total do imóvel
+     *
      * @param id valor Long representando o imóvel
      * @return Valor Double.
      */
@@ -34,6 +35,7 @@ public class PropertyController {
 
     /**
      * Método do Controller que retorna o valor do imóvel
+     *
      * @param id valor Long representando o imóvel
      * @return Valor BigDecimal.
      */
@@ -44,6 +46,7 @@ public class PropertyController {
 
     /**
      * Método do Controller que retorna o maior cômodo do imóvel
+     *
      * @param id valor Long representando o imóvel
      * @return Objeto RoomResponseDto contendo informações do cômodo.
      */
@@ -54,6 +57,7 @@ public class PropertyController {
 
     /**
      * Método do Controller que retorna lista de cômodos do imóvel e suas áreas
+     *
      * @param id valor Long representando o imóvel
      * @return Lista de RoomResponseDto contendo informações dos cômodos.
      */
@@ -65,6 +69,7 @@ public class PropertyController {
 
     /**
      * Método do Controller que recebe um imóvel e envia ao service para salvá-lo.
+     *
      * @param property objeto PropertyRequestDto
      * @return O objeto Property que foi salvo.
      */

@@ -30,18 +30,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class PropertyIntegrationTest {
+    private final ObjectMapper mapper = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private IPropertyRepository repository;
-
     @Autowired
     private IDistrictRepository districtRepository;
-
     private Property property;
-
-    private final ObjectMapper mapper = new ObjectMapper();
 
     @BeforeEach
     public void setup() {
@@ -155,8 +151,8 @@ public class PropertyIntegrationTest {
 
     @Test
     public void getRoomsArea_returnRoomAreas_whenPropertyExists() throws Exception {
-        var room1 = property.getPropRooms().get(0);
-        var room2 = property.getPropRooms().get(1);
+        Room room1 = property.getPropRooms().get(0);
+        Room room2 = property.getPropRooms().get(1);
 
         mockMvc.perform(get("/api/v1/property/" + property.getPropId() + "/roomsArea"))
                 .andExpect(status().isOk())
@@ -176,8 +172,8 @@ public class PropertyIntegrationTest {
         PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
 
         MvcResult response = mockMvc.perform(post("/api/v1/property/")
-                .content(mapper.writeValueAsString(newProperty))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(newProperty))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.propName").value(newProperty.getPropName()))
@@ -195,8 +191,8 @@ public class PropertyIntegrationTest {
         newProperty.setDistrictId(250L);
 
         mockMvc.perform(post("/api/v1/property/")
-                .content(mapper.writeValueAsString(newProperty))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(newProperty))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.name").value("DistrictNotFoundException"))
                 .andExpect(jsonPath("$.description", containsString("bairro")));
@@ -208,8 +204,8 @@ public class PropertyIntegrationTest {
         newProperty.setPropName(null);
 
         mockMvc.perform(post("/api/v1/property/")
-                .content(mapper.writeValueAsString(newProperty))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(newProperty))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("estar vazio")));
@@ -221,8 +217,8 @@ public class PropertyIntegrationTest {
         newProperty.setPropName("casa");
 
         mockMvc.perform(post("/api/v1/property/")
-                .content(mapper.writeValueAsString(newProperty))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(newProperty))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("letra maiúscula")));
@@ -234,8 +230,8 @@ public class PropertyIntegrationTest {
         newProperty.setPropName("Lorem ipsum dolor sit amet cons");
 
         mockMvc.perform(post("/api/v1/property/")
-                .content(mapper.writeValueAsString(newProperty))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(newProperty))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("exceder 30 caracteres")));
@@ -247,8 +243,8 @@ public class PropertyIntegrationTest {
         newProperty.setDistrictId(null);
 
         mockMvc.perform(post("/api/v1/property/")
-                .content(mapper.writeValueAsString(newProperty))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(newProperty))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("bairro")));
@@ -260,8 +256,8 @@ public class PropertyIntegrationTest {
         newProperty.setPropRooms(null);
 
         mockMvc.perform(post("/api/v1/property/")
-                .content(mapper.writeValueAsString(newProperty))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(newProperty))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("cômodo")));
@@ -273,8 +269,8 @@ public class PropertyIntegrationTest {
         newProperty.getPropRooms().get(0).setRoomName(null);
 
         mockMvc.perform(post("/api/v1/property/")
-                .content(mapper.writeValueAsString(newProperty))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(newProperty))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("estar vazio")));
@@ -286,8 +282,8 @@ public class PropertyIntegrationTest {
         newProperty.getPropRooms().get(0).setRoomName("quarto");
 
         mockMvc.perform(post("/api/v1/property/")
-                .content(mapper.writeValueAsString(newProperty))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(newProperty))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("letra maiúscula")));
@@ -299,8 +295,8 @@ public class PropertyIntegrationTest {
         newProperty.getPropRooms().get(0).setRoomName("Lorem ipsum dolor sit amet cons");
 
         mockMvc.perform(post("/api/v1/property/")
-                .content(mapper.writeValueAsString(newProperty))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(newProperty))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("exceder 30 caracteres")));
@@ -312,8 +308,8 @@ public class PropertyIntegrationTest {
         newProperty.getPropRooms().get(0).setRoomWidth(0);
 
         mockMvc.perform(post("/api/v1/property/")
-                .content(mapper.writeValueAsString(newProperty))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(newProperty))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("largura do cômodo")));
@@ -325,8 +321,8 @@ public class PropertyIntegrationTest {
         newProperty.getPropRooms().get(0).setRoomWidth(-5);
 
         mockMvc.perform(post("/api/v1/property/")
-                .content(mapper.writeValueAsString(newProperty))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(newProperty))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("largura do cômodo")));
@@ -338,8 +334,8 @@ public class PropertyIntegrationTest {
         newProperty.getPropRooms().get(0).setRoomWidth(25.1);
 
         mockMvc.perform(post("/api/v1/property/")
-                .content(mapper.writeValueAsString(newProperty))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(newProperty))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("largura máxima")));
@@ -351,8 +347,8 @@ public class PropertyIntegrationTest {
         newProperty.getPropRooms().get(0).setRoomLength(0);
 
         mockMvc.perform(post("/api/v1/property/")
-                .content(mapper.writeValueAsString(newProperty))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(newProperty))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("comprimento do cômodo")));
@@ -364,8 +360,8 @@ public class PropertyIntegrationTest {
         newProperty.getPropRooms().get(0).setRoomLength(-5);
 
         mockMvc.perform(post("/api/v1/property/")
-                .content(mapper.writeValueAsString(newProperty))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(newProperty))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("comprimento do cômodo")));
@@ -377,8 +373,8 @@ public class PropertyIntegrationTest {
         newProperty.getPropRooms().get(0).setRoomLength(33.1);
 
         mockMvc.perform(post("/api/v1/property/")
-                .content(mapper.writeValueAsString(newProperty))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(newProperty))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
                 .andExpect(jsonPath("$.description", containsString("comprimento máximo")));

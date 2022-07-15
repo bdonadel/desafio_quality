@@ -18,11 +18,10 @@ import java.util.List;
 import java.util.Properties;
 
 public class TestUtilsGenerator {
-    @Autowired
-    private IDistrictRepository districtRepository;
-
     private static String SCOPE;
     private static ObjectWriter mapper;
+    @Autowired
+    private IDistrictRepository districtRepository;
 
     public static void emptyUsersFile() {
         Properties properties = new Properties();
@@ -71,7 +70,7 @@ public class TestUtilsGenerator {
     }
 
     public static Property getPropertyWithoutRoom() {
-        var district = new District(2L, "Jardim Paulista", new BigDecimal("5"));
+        District district = new District(2L, "Jardim Paulista", new BigDecimal("5"));
         return new Property(3L, "Casa", district, new ArrayList<>());
 
     }

@@ -73,7 +73,9 @@ class PropertyServiceTest {
         double room1 = property.getPropRooms().get(0).getRoomWidth() * property.getPropRooms().get(0).getRoomLength();
         double room2 = property.getPropRooms().get(1).getRoomWidth() * property.getPropRooms().get(1).getRoomLength();
         double m2 = room1 + room2;
-        BigDecimal resultValue = property.getPropDistrict().getValueDistrictM2().multiply(new BigDecimal(m2).setScale(2, RoundingMode.CEILING));
+        BigDecimal resultValue =
+                property.getPropDistrict().getValueDistrictM2().multiply(new BigDecimal(m2).setScale(2,
+                        RoundingMode.CEILING));
 
         assertThat(resultValue).isEqualTo(propertyValue);
         assertThat(propertyValue).isPositive();

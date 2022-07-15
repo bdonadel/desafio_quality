@@ -9,6 +9,7 @@ public interface IDistrictService {
 
     /**
      * Método do service responsável pela lógica de salvar um bairro na base de dados.
+     *
      * @param district objeto District que será salvo
      * @return Objeto District que foi salvo salvo.
      */
@@ -16,6 +17,7 @@ public interface IDistrictService {
 
     /**
      * Método do service responsável pela lógica de retornar um bairro dado um id.
+     *
      * @param districtId Long que representa id do bairro
      * @return Objeto District.
      */

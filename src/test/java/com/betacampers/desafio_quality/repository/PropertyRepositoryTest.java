@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class PropertyRepositoryTest {
@@ -17,7 +17,7 @@ class PropertyRepositoryTest {
     private IPropertyRepository propertyRepository;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         propertyRepository = new PropertyRepository();
         TestUtilsGenerator.emptyUsersFile();
     }
@@ -32,7 +32,7 @@ class PropertyRepositoryTest {
 
         // Assert
         assertThat(foundProperty).isNotNull();
-        assertEquals(foundProperty.getPropId(),savedProperty.getPropId());
+        assertEquals(foundProperty.getPropId(), savedProperty.getPropId());
         assertEquals(foundProperty.getPropName(), savedProperty.getPropName());
         assertEquals(foundProperty.getPropDistrict(), savedProperty.getPropDistrict());
         assertEquals(foundProperty.getPropRooms(), savedProperty.getPropRooms());
@@ -65,7 +65,7 @@ class PropertyRepositoryTest {
 
         // Assert
         assertThat(savedProperty).isNotNull();
-        assertEquals(savedProperty.getPropId(),savedProperty.getPropId());
+        assertEquals(savedProperty.getPropId(), savedProperty.getPropId());
         assertEquals(savedProperty.getPropName(), savedProperty.getPropName());
         assertEquals(savedProperty.getPropDistrict(), savedProperty.getPropDistrict());
         assertEquals(savedProperty.getPropRooms(), savedProperty.getPropRooms());

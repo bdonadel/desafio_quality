@@ -1,12 +1,8 @@
 package com.betacampers.desafio_quality.service;
 
-import com.betacampers.desafio_quality.exception.CustomExceptionHandler;
-import com.betacampers.desafio_quality.exception.DistrictNotFoundException;
 import com.betacampers.desafio_quality.model.District;
 import com.betacampers.desafio_quality.repository.IDistrictRepository;
-import com.betacampers.desafio_quality.repository.IPropertyRepository;
 import com.betacampers.desafio_quality.util.TestUtilsGenerator;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,10 +13,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 
@@ -35,7 +29,7 @@ class DistrictServiceTest {
     IDistrictRepository districtRepository;
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         BDDMockito.when(districtRepository.save(ArgumentMatchers.any(District.class)))
                 .thenReturn(TestUtilsGenerator.getNewDistrictWithId());
 
