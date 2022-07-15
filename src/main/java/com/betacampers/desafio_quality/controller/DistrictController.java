@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 
 @RestController
 @RequestMapping("/api/v1/district")
@@ -16,7 +18,7 @@ public class DistrictController {
     private IDistrictService service;
 
     @PostMapping
-    public ResponseEntity<District> createDistrict(@RequestBody District district) {
+    public ResponseEntity<District> createDistrict(@RequestBody @Valid District district) {
         if (district.getDistrictId() != null) {
             return ResponseEntity.badRequest().build();
         }

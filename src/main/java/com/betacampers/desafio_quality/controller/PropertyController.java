@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class PropertyController {
     }
 
     @PostMapping("/property")
-    public ResponseEntity<Property> saveProperty(@RequestBody PropertyRequestDto property) {
+    public ResponseEntity<Property> saveProperty(@RequestBody @Valid PropertyRequestDto property) {
         return ResponseEntity.status(HttpStatus.CREATED).body(propertyService.saveProperty(property));
     }
 }
