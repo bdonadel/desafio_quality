@@ -9,6 +9,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+/**
+ * Representa um cômodo de um imóvel
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

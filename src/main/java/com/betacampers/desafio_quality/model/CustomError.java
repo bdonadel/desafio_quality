@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Representa um erro para ser retornado em Exception
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -10,6 +10,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
+/**
+ * Representa um bairro
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

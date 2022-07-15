@@ -4,6 +4,9 @@ import com.betacampers.desafio_quality.model.CustomError;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+/**
+ * Exception genérica
+ */
 @Getter
 public class CustomException extends RuntimeException {
 
