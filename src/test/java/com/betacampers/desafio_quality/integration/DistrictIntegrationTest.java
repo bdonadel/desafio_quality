@@ -64,6 +64,7 @@ public class DistrictIntegrationTest {
                 HttpMethod.POST, httpEntity, District.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+
     }
 
     @Test

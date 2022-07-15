@@ -28,30 +28,18 @@ class PropertyRepositoryTest {
     @Test
     @DisplayName("GetById retorna a propriedade")
     void getById_returnProperty_whenPropertyExist() {
-
-        Room r1 = new Room("Quarto 1", 2.0, 3.5);
-        Room r2 = new Room("Cozinha", 1.0, 2.5);
-
-        Property p = TestUtilsGenerator.getNewProperty(r1, r2);
-
+        Property p = TestUtilsGenerator.getNewProperty();
         propertyRepository.save(p);
 
         Property property = propertyRepository.getById(p.getPropId());
 
         assertThat(property).isNotNull();
         assertThat(property.getPropId()).isEqualTo(p.getPropId());
-
     }
 
     @Test
     void getById_throwException_whenPropertyNotExist() {
-
-        Room r1 = new Room("Quarto 1", 2.0, 3.5);
-        Room r2 = new Room("Cozinha", 1.0, 2.5);
-
-        Property p = TestUtilsGenerator.getNewProperty(r1, r2);
-
-
+        Property p = TestUtilsGenerator.getNewProperty();
         propertyRepository.save(p);
 
         PropertyNotFoundException exception = Assertions.assertThrows(PropertyNotFoundException.class, () -> {
@@ -65,12 +53,7 @@ class PropertyRepositoryTest {
 
     @Test
     void save_returnProperty_whenNewProperty() {
-
-        Room r1 = new Room("Quarto 1", 2.0, 3.5);
-        Room r2 = new Room("Cozinha", 1.0, 2.5);
-
-        Property p = TestUtilsGenerator.getNewProperty(r1, r2);
-
+        Property p = TestUtilsGenerator.getNewProperty();
 
         Property savedProperty = propertyRepository.save(p);
 
@@ -79,28 +62,11 @@ class PropertyRepositoryTest {
     }
 
     @Test
-    void save_returnProperty_whenNull() {
+    void save_throwException_whenNull() {
 
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
             Property property = propertyRepository.save(null);
         });
-
-    }
-
-    @Test
-    void getAll_ListProperty_whenExists() {
-
-        Room r1 = new Room("Quarto 1", 2.0, 3.5);
-        Room r2 = new Room("Cozinha", 1.0, 2.5);
-
-        Property p = TestUtilsGenerator.getNewProperty(r1, r2);
-
-
-        propertyRepository.save(p);
-
-        List<Property> properties = propertyRepository.getAll();
-
-        assertThat(properties).hasSizeGreaterThan(0);
 
     }
 

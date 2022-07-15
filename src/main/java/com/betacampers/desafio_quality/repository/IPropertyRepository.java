@@ -14,12 +14,6 @@ public interface IPropertyRepository {
     Property getById(Long propertyId);
 
     /**
-     * Metódo do repository responsável por retornar uma lista de imóveis.
-     * @return Uma lista de Property.
-     */
-    List<Property> getAll();
-
-    /**
      * Metódo do repository responsável por salvar um imóvel na base de dados.
      * @param property - objeto Property que será salvo
      * @return Objeto Property que foi salvo salvo.

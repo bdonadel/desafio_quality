@@ -49,11 +49,6 @@ public class PropertyRepository implements IPropertyRepository {
         return properties.get(propertyId);
     }
 
-    @Override
-    public List<Property> getAll() {
-        return new ArrayList<>(properties.values());
-    }
-
     private void loadData() {
         HashMap<Long, Property> loadedData = null;
 
