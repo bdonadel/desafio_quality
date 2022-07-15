@@ -32,7 +32,6 @@ API REST desenvolvida pelo grupo Beta Campers para o Desafio Quality focado em t
   - [Get - Retorna o valor de um imóvel](#propertyValue)
   - [Get - Retorna o maior cômodo do imóvel](#biggestRoom)
   - [Get - Retorna informações do cômodo](#roomInfo)
-  - [Get - Retorna todos os imóveis](#allProperties)
 - [Bairros](#bairros)
   - [Post - Cadastra um novo bairro](#addDistrict)
   - [Get - Retorna o bairro de acordo com o Id passado](#getDistrict)
@@ -169,70 +168,6 @@ Retorna nome, largura, comprimento e área de um cômodo.
         "roomWidth": 1.8,
         "roomLength": 2.4,
         "roomArea": 4.32
-    }
-]
-</code></pre>
-
-`GET /api/v1/properties` <br name="allProperties">
-Retorna todos os imóveis.
-<pre><code><b>Response:</b>
-[
-    {
-        "propId": 1,
-        "propName": "Casa A",
-        "propDistrict": {
-            "districtId": 1,
-            "districtName": "Centro",
-            "valueDistrictM2": 10
-        },
-        "propRooms": [
-            {
-                "roomName": "Quarto de solteiro",
-                "roomWidth": 2.5,
-                "roomLength": 4.2
-            },
-            {
-                "roomName": "Quarto de casal",
-                "roomWidth": 3.5,
-                "roomLength": 4.6
-            },
-            {
-                "roomName": "Cozinha",
-                "roomWidth": 3.6,
-                "roomLength": 4.8
-            },
-            {
-                "roomName": "Banheiro",
-                "roomWidth": 1.8,
-                "roomLength": 2.4
-            }
-        ]
-    },
-    {
-        "propId": 2,
-        "propName": "Apartamento 12",
-        "propDistrict": {
-            "districtId": 2,
-            "districtName": "Sossego",
-            "valueDistrictM2": 10
-        },
-        "propRooms": [
-            {
-                "roomName": "Quarto",
-                "roomWidth": 2.5,
-                "roomLength": 4.2
-            },
-            {
-                "roomName": "Cozinha",
-                "roomWidth": 2.5,
-                "roomLength": 3.0
-            },
-            {
-                "roomName": "Banheiro",
-                "roomWidth": 1.5,
-                "roomLength": 2.2
-            }
-        ]
     }
 ]
 </code></pre>
