@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
 
 /**
  * Controller do District
@@ -23,7 +24,7 @@ public class DistrictController {
      * @return O objeto District que foi salvo.
      */
     @PostMapping
-    public ResponseEntity<District> createDistrict(@RequestBody District district) {
+    public ResponseEntity<District> createDistrict(@RequestBody @Valid District district) {
         if (district.getDistrictId() != null) {
             return ResponseEntity.badRequest().build();
         }
