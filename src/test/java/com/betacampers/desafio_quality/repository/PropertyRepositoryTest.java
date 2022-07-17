@@ -1,11 +1,9 @@
 package com.betacampers.desafio_quality.repository;
 
-import com.betacampers.desafio_quality.exception.PropertyNotFoundException;
 import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.util.TestUtilsGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,20 +37,16 @@ class PropertyRepositoryTest {
     }
 
     @Test
-    void getById_throwException_whenPropertyNotExist() {
+    void getById_returnNull_whenPropertyDoesNotExist() {
         // Arrange
         Property savedProperty = TestUtilsGenerator.getNewProperty();
         propertyRepository.save(savedProperty);
 
         // Act
-        PropertyNotFoundException exception = assertThrows(PropertyNotFoundException.class, () -> {
-            Property property = propertyRepository.getById(1001L);
-            assertThat(property).isNull();
-        });
+        Property property = propertyRepository.getById(1001L);
 
         // Assert
-        assertThat(exception.getError().getDescription()).contains("1001");
-        assertEquals(exception.getStatus(), HttpStatus.NOT_FOUND);
+        assertThat(property).isNull();
     }
 
     @Test

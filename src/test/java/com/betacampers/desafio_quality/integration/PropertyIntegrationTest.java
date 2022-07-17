@@ -19,7 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,22 +71,6 @@ public class PropertyIntegrationTest {
     }
 
     @Test
-    void getPropertyArea_returnException_whenPropertyWithoutRoom() throws Exception {
-        // Arrange
-        Property property = TestUtilsGenerator.getPropertyWithoutRoom();
-        repository.save(property);
-
-        // Act
-        MvcResult response = mockMvc.perform(get("/api/v1/property/" + property.getPropId() + "/area"))
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        // Assert
-        assertThat(response.getResponse().getContentAsString(Charset.defaultCharset())).contains("Imóvel sem cômodos");
-        assertThat(response.getResponse().getContentAsString(Charset.defaultCharset())).contains("" + property.getPropId());
-    }
-
-    @Test
     public void getPropertyArea_returnStatusNotFound_whenPropertyNotExists() throws Exception {
         mockMvc.perform(get("/api/v1/property/50/area")).andExpect(status().isNotFound());
     }
@@ -128,22 +111,6 @@ public class PropertyIntegrationTest {
         assertThat(largestRoom.getRoomWidth()).isPositive();
         assertThat(largestRoom.getRoomName()).isNotBlank();
         assertThat(largestRoom.getRoomArea()).isEqualTo(largestRoomArea);
-    }
-
-    @Test
-    void getLargestRoom_returnException_whenPropertyWithoutRoom() throws Exception {
-        // Arrange
-        Property property = TestUtilsGenerator.getPropertyWithoutRoom();
-        repository.save(property);
-
-        // Act
-        MvcResult response = mockMvc.perform(get("/api/v1/property/" + property.getPropId() + "/largest-room"))
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        // Assert
-        assertThat(response.getResponse().getContentAsString(Charset.defaultCharset())).contains("Imóvel sem cômodos");
-        assertThat(response.getResponse().getContentAsString(Charset.defaultCharset())).contains("" + property.getPropId());
     }
 
     @Test
@@ -400,9 +367,9 @@ public class PropertyIntegrationTest {
     @Test
     public void postSaveProperty_returnStatusBadRequest_whenSendingNonStringInPlaceOfString() throws Exception {
         Map<String, Object> body = new HashMap<>();
-        body.put("propName", List.of());
+        body.put("propName", List.of()); // invalid
         body.put("districtId", 1);
-        body.put("propRooms", List.of()); // invalid
+        body.put("propRooms", List.of()); 
 
         mockMvc.perform(post("/api/v1/property")
                         .content(mapper.writeValueAsString(body))

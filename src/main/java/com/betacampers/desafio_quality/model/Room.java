@@ -1,5 +1,6 @@
 package com.betacampers.desafio_quality.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,4 +29,9 @@ public class Room {
     @Positive(message = "O comprimento do cômodo não pode estar vazio.")
     @DecimalMax(value = "33.0", message = "O comprimento máximo permitido por cômodo é de {value} metros.")
     private double roomLength;
+
+    @JsonIgnore
+    public double getRoomArea() {
+        return roomWidth * roomLength;
+    }
 }

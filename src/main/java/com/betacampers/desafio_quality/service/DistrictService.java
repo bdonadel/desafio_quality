@@ -1,5 +1,6 @@
 package com.betacampers.desafio_quality.service;
 
+import com.betacampers.desafio_quality.exception.DistrictNotFoundException;
 import com.betacampers.desafio_quality.model.District;
 import com.betacampers.desafio_quality.repository.IDistrictRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,18 @@ public class DistrictService implements IDistrictService {
 
     @Override
     public District save(District district) {
+        if (district.getDistrictId() != null && !repository.exists(district)) {
+            throw new DistrictNotFoundException(district.getDistrictId());
+        }
         return repository.save(district);
     }
 
     @Override
     public District getById(Long districtId) {
-        return repository.getById(districtId);
+        District district = repository.getById(districtId);
+        if (district == null) {
+            throw new DistrictNotFoundException(districtId);
+        }
+        return district;
     }
 }
