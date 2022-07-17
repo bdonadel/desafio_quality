@@ -2,15 +2,17 @@ package com.betacampers.desafio_quality.model;
 
 import com.betacampers.desafio_quality.dto.PropertyRequestDto;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 /**
  * Representa um imóvel
  */
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Property {

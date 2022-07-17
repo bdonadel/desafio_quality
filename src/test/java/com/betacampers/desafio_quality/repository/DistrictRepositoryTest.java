@@ -3,7 +3,6 @@ package com.betacampers.desafio_quality.repository;
 import com.betacampers.desafio_quality.exception.DistrictNotFoundException;
 import com.betacampers.desafio_quality.model.District;
 import com.betacampers.desafio_quality.util.TestUtilsGenerator;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -12,6 +11,7 @@ import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DistrictRepositoryTest {
 
@@ -44,7 +44,7 @@ class DistrictRepositoryTest {
         District district = TestUtilsGenerator.getNewDistrictWithId();
 
         // Act
-        DistrictNotFoundException exception = Assertions.assertThrows(
+        DistrictNotFoundException exception = assertThrows(
                 DistrictNotFoundException.class,
                 () -> districtRepository.getById(district.getDistrictId()));
 
@@ -92,12 +92,17 @@ class DistrictRepositoryTest {
         District district = TestUtilsGenerator.getNewDistrictWithId();
 
         // Act
-        DistrictNotFoundException exception = Assertions.assertThrows(
+        DistrictNotFoundException exception = assertThrows(
                 DistrictNotFoundException.class,
                 () -> districtRepository.save(district));
 
         // Assert
         assertThat(exception.getError().getDescription()).contains(district.getDistrictId().toString());
         assertEquals(exception.getStatus(), HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    void constructor_throwsRuntimeException_whenItCannotOpenPropertiesFile() {
+        assertThrows(RuntimeException.class, () -> new DistrictRepository("naoexiste.properties"));
     }
 }

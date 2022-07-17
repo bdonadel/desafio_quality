@@ -81,5 +81,4 @@ public class PropertyService implements IPropertyService {
         Property property = propertyRepository.getById(propertyId);
         return property.getPropRooms().stream().map(RoomResponseDto::new).collect(Collectors.toList());
     }
-
 }

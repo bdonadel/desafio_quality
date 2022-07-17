@@ -1,13 +1,15 @@
 package com.betacampers.desafio_quality.dto;
 
 import com.betacampers.desafio_quality.model.Room;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * DTO de resposta para cômodo do imóvel, contendo a área
  */
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class RoomResponseDto {
     private String roomName;

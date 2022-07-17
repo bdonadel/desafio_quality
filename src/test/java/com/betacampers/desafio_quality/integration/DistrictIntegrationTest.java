@@ -93,7 +93,7 @@ public class DistrictIntegrationTest {
                         .content(mapper.writeValueAsString(district))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.name").value("Campo(s) inválido(s)"))
                 .andExpect(jsonPath("$.description", containsString("nome")));
     }
 
@@ -106,7 +106,7 @@ public class DistrictIntegrationTest {
                         .content(mapper.writeValueAsString(district))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.name").value("Campo(s) inválido(s)"))
                 .andExpect(jsonPath("$.description", containsString("letra maiúscula")));
     }
 
@@ -119,7 +119,7 @@ public class DistrictIntegrationTest {
                         .content(mapper.writeValueAsString(district))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.name").value("Campo(s) inválido(s)"))
                 .andExpect(jsonPath("$.description", containsString("45")));
     }
 
@@ -132,7 +132,7 @@ public class DistrictIntegrationTest {
                         .content(mapper.writeValueAsString(district))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.name").value("Campo(s) inválido(s)"))
                 .andExpect(jsonPath("$.description", containsString("metro quadrado")));
     }
 
@@ -145,7 +145,7 @@ public class DistrictIntegrationTest {
                         .content(mapper.writeValueAsString(district))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.name").value("MethodArgumentNotValidException"))
+                .andExpect(jsonPath("$.name").value("Campo(s) inválido(s)"))
                 .andExpect(jsonPath("$.description", containsString("2 casas decimais")));
     }
 
@@ -160,7 +160,7 @@ public class DistrictIntegrationTest {
                         .content(mapper.writeValueAsString(body))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.name").value("InvalidFormatException"))
-                .andExpect(jsonPath("$.description", containsString("esperado BigDecimal")));
+                .andExpect(jsonPath("$.name").value("Campo(s) inválido(s)"))
+                .andExpect(jsonPath("$.description", containsString("esperado number")));
     }
 }

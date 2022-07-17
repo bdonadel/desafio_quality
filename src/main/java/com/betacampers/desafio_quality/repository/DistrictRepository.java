@@ -10,10 +10,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -23,19 +21,22 @@ import java.util.Properties;
 @Repository
 public class DistrictRepository implements IDistrictRepository {
 
+    private final String scope;
     private Map<Long, District> districts;
-    private String scope;
 
-    public DistrictRepository() {
-        Properties properties = new Properties();
-
+    public DistrictRepository(String propertiesFile) {
         try {
-            properties.load(new ClassPathResource("application.properties").getInputStream());
+            Properties properties = new Properties();
+            properties.load(new ClassPathResource(propertiesFile).getInputStream());
             scope = properties.getProperty("api.scope");
             loadData();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+    }
+
+    public DistrictRepository() {
+        this("application.properties");
     }
 
     @Override
@@ -79,35 +80,22 @@ public class DistrictRepository implements IDistrictRepository {
     }
 
     private void loadData() {
-        HashMap<Long, District> loadedData = null;
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        File file;
         try {
-            file = ResourceUtils.getFile("./src/" + scope + "/resources/district.json");
-            loadedData = objectMapper.readValue(file, new TypeReference<>() {});
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("Failed while initializing DB, check your resources files");
+            ObjectMapper objectMapper = new ObjectMapper();
+            File file = ResourceUtils.getFile("./src/" + scope + "/resources/district.json");
+            districts = objectMapper.readValue(file, new TypeReference<>() {});
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Failed while initializing DB, check your JSON formatting.");
+            throw new RuntimeException("Failed while initializing DB.", e);
         }
-
-        districts = loadedData;
     }
 
     private void saveData() {
-        ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         try {
+            ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
             File file = ResourceUtils.getFile("./src/" + scope + "/resources/district.json");
             objectMapper.writeValue(file, districts);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("Failed while writing to DB, check your resources files");
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Failed while writing to DB, check your JSON formatting.");
+            throw new RuntimeException("Failed while writing to DB.", e);
         }
     }
 }

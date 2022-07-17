@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,18 +22,21 @@ import java.util.Properties;
 public class PropertyRepository implements IPropertyRepository {
 
     private HashMap<Long, Property> properties;
-    private String scope;
+    private final String scope;
 
-    public PropertyRepository() {
-        Properties props = new Properties();
-
+    public PropertyRepository(String propertiesFile) {
         try {
-            props.load(new ClassPathResource("application.properties").getInputStream());
+            Properties props = new Properties();
+            props.load(new ClassPathResource(propertiesFile).getInputStream());
             scope = props.getProperty("api.scope");
             loadData();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+    }
+
+    public PropertyRepository() {
+        this("application.properties");
     }
 
     @Override
@@ -55,35 +57,22 @@ public class PropertyRepository implements IPropertyRepository {
     }
 
     private void loadData() {
-        HashMap<Long, Property> loadedData = null;
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        File file;
         try {
-            file = ResourceUtils.getFile("./src/" + scope + "/resources/property.json");
-            loadedData = objectMapper.readValue(file, new TypeReference<>() {});
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("Failed while initializing DB, check your resources files");
+            ObjectMapper objectMapper = new ObjectMapper();
+            File file = ResourceUtils.getFile("./src/" + scope + "/resources/property.json");
+            properties = objectMapper.readValue(file, new TypeReference<>() {});
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Failed while initializing DB, check your JSON formatting.");
+            throw new RuntimeException("Failed while initializing DB.", e);
         }
-
-        properties = loadedData;
     }
 
     private void saveData() {
-        ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         try {
+            ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
             File file = ResourceUtils.getFile("./src/" + scope + "/resources/property.json");
             objectMapper.writeValue(file, properties);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("Failed while writing to DB, check your resources files");
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Failed while writing to DB, check your JSON formatting.");
+            throw new RuntimeException("Failed while writing to DB.", e);
         }
     }
 }

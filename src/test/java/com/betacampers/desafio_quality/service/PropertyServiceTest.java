@@ -136,7 +136,7 @@ class PropertyServiceTest {
 
         //Assert
         assertThat(exception.getError().getDescription()).contains("" + property.getPropId());
-        assertThat(exception.getError().getName()).isEqualTo(PropertyWithoutRoomException.class.getSimpleName());
+        assertThat(exception.getError().getName()).isEqualTo("Imóvel sem cômodos");
     }
 
     @Test
@@ -176,7 +176,7 @@ class PropertyServiceTest {
 
         // Assert
         assertThat(exception.getError().getDescription()).contains("" + property.getPropId());
-        assertThat(exception.getError().getName()).isEqualTo(PropertyWithoutRoomException.class.getSimpleName());
+        assertThat(exception.getError().getName()).isEqualTo("Imóvel sem cômodos");
     }
 
 }

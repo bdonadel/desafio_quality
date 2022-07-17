@@ -3,13 +3,13 @@ package com.betacampers.desafio_quality.repository;
 import com.betacampers.desafio_quality.exception.PropertyNotFoundException;
 import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.util.TestUtilsGenerator;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 class PropertyRepositoryTest {
@@ -45,7 +45,7 @@ class PropertyRepositoryTest {
         propertyRepository.save(savedProperty);
 
         // Act
-        PropertyNotFoundException exception = Assertions.assertThrows(PropertyNotFoundException.class, () -> {
+        PropertyNotFoundException exception = assertThrows(PropertyNotFoundException.class, () -> {
             Property property = propertyRepository.getById(1001L);
             assertThat(property).isNull();
         });
@@ -74,10 +74,14 @@ class PropertyRepositoryTest {
     @Test
     void save_throwException_whenNullParam() {
         // Arrange & Act
-        Assertions.assertThrows(RuntimeException.class, () -> {
+        assertThrows(RuntimeException.class, () -> {
             Property savedProperty = propertyRepository.save(null);
             assertThat(savedProperty).isNull();
         });
     }
 
+    @Test
+    void constructor_throwsRuntimeException_whenItCannotOpenPropertiesFile() {
+        assertThrows(RuntimeException.class, () -> new PropertyRepository("naoexiste.properties"));
+    }
 }
