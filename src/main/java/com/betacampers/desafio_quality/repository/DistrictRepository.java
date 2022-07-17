@@ -1,6 +1,5 @@
 package com.betacampers.desafio_quality.repository;
 
-import com.betacampers.desafio_quality.exception.DistrictNotFoundException;
 import com.betacampers.desafio_quality.model.District;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,48 +41,31 @@ public class DistrictRepository implements IDistrictRepository {
     @Override
     public District getById(Long districtId) {
         loadData();
-        District district = districts.get(districtId);
-        if (district != null) {
-            return district;
-        }
-        throw new DistrictNotFoundException(districtId);
+        return districts.get(districtId);
     }
 
     @Override
     public District save(District district) {
-        boolean districtNotExist = !exists(district);
-
-        if (district.getDistrictId() != null && districtNotExist) {
-            throw new DistrictNotFoundException(district.getDistrictId());
-        }
-
-        if (districtNotExist) {
+        if (!exists(district)) {
             Long greaterId = (districts.size() > 0) ? Collections.max(districts.keySet()) : 0L;
             district.setDistrictId(greaterId + 1L);
         }
 
         districts.put(district.getDistrictId(), district);
-
         saveData();
 
         return district;
     }
 
     public boolean exists(District district) {
-        boolean ret = false;
-        try {
-            ret = getById(district.getDistrictId()) != null;
-        } catch (DistrictNotFoundException ignored) {
-        }
-
-        return ret;
+        return getById(district.getDistrictId()) != null;
     }
 
     private void loadData() {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
+            ObjectMapper mapper = new ObjectMapper();
             File file = ResourceUtils.getFile("./src/" + scope + "/resources/district.json");
-            districts = objectMapper.readValue(file, new TypeReference<>() {});
+            districts = mapper.readValue(file, new TypeReference<>() {});
         } catch (IOException e) {
             throw new RuntimeException("Failed while initializing DB.", e);
         }
@@ -91,9 +73,9 @@ public class DistrictRepository implements IDistrictRepository {
 
     private void saveData() {
         try {
-            ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+            ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
             File file = ResourceUtils.getFile("./src/" + scope + "/resources/district.json");
-            objectMapper.writeValue(file, districts);
+            mapper.writeValue(file, districts);
         } catch (IOException e) {
             throw new RuntimeException("Failed while writing to DB.", e);
         }

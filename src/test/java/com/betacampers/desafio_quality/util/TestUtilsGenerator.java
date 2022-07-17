@@ -15,14 +15,12 @@ import java.util.List;
 import java.util.Properties;
 
 public class TestUtilsGenerator {
-    private static String scope;
-
     public static void emptyUsersFile() {
         try {
             Properties properties = new Properties();
 
             properties.load(new ClassPathResource("application.properties").getInputStream());
-            scope = properties.getProperty("api.scope");
+            String scope = properties.getProperty("api.scope");
 
             PrintWriter writerDistrict = new PrintWriter(
                     ResourceUtils.getFile("./src/" + scope + "/resources" + "/district.json"));

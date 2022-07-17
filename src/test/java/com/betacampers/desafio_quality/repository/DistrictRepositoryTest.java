@@ -1,11 +1,9 @@
 package com.betacampers.desafio_quality.repository;
 
-import com.betacampers.desafio_quality.exception.DistrictNotFoundException;
 import com.betacampers.desafio_quality.model.District;
 import com.betacampers.desafio_quality.util.TestUtilsGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;
 
@@ -39,18 +37,15 @@ class DistrictRepositoryTest {
     }
 
     @Test
-    void getById_throwException_whenDistrictNotExist() {
+    void getById_returnNull_whenDistrictNotExist() {
         // Arrange
         District district = TestUtilsGenerator.getNewDistrictWithId();
 
         // Act
-        DistrictNotFoundException exception = assertThrows(
-                DistrictNotFoundException.class,
-                () -> districtRepository.getById(district.getDistrictId()));
+        District actual = districtRepository.getById(district.getDistrictId());
 
         // Assert
-        assertThat(exception.getError().getDescription()).contains(district.getDistrictId().toString());
-        assertEquals(exception.getStatus(), HttpStatus.NOT_FOUND);
+        assertThat(actual).isNull();
     }
 
     @Test
@@ -87,18 +82,17 @@ class DistrictRepositoryTest {
     }
 
     @Test
-    void save_throwException_whenDistrictIdExistsAndDistrictNotExist() {
+    void save_generateNextId_whenDistrictIdExistsAndDistrictNotExist() {
         // Arrange
-        District district = TestUtilsGenerator.getNewDistrictWithId();
+        District district = new District(15L, "Bairro", new BigDecimal(10));
 
         // Act
-        DistrictNotFoundException exception = assertThrows(
-                DistrictNotFoundException.class,
-                () -> districtRepository.save(district));
+        districtRepository.save(district);
+        District saved = districtRepository.getById(1L);
 
         // Assert
-        assertThat(exception.getError().getDescription()).contains(district.getDistrictId().toString());
-        assertEquals(exception.getStatus(), HttpStatus.NOT_FOUND);
+        assertThat(saved.getDistrictId()).isEqualTo(1L);
+        assertThat(districtRepository.getById(15L)).isNull();
     }
 
     @Test

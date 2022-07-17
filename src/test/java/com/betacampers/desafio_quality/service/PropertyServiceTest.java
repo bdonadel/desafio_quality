@@ -5,10 +5,8 @@ import com.betacampers.desafio_quality.dto.RoomResponseDto;
 import com.betacampers.desafio_quality.exception.PropertyWithoutRoomException;
 import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.model.Room;
-import com.betacampers.desafio_quality.repository.IDistrictRepository;
 import com.betacampers.desafio_quality.repository.IPropertyRepository;
 import com.betacampers.desafio_quality.util.TestUtilsGenerator;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +23,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,7 +37,7 @@ class PropertyServiceTest {
     IPropertyRepository propertyRepository;
 
     @Mock
-    IDistrictRepository districtRepository;
+    IDistrictService districtService;
 
     @BeforeEach
     public void setup() {
@@ -49,7 +48,7 @@ class PropertyServiceTest {
     @Test
     void saveProperty_returnProperty_whenNewProperty() {
         PropertyRequestDto newProperty = TestUtilsGenerator.getNewPropertyRequest();
-        when(districtRepository.getById(ArgumentMatchers.anyLong()))
+        when(districtService.getById(ArgumentMatchers.anyLong()))
                 .thenReturn(TestUtilsGenerator.getNewDistrictWithId());
 
         when(propertyRepository.save(ArgumentMatchers.any(Property.class)))
@@ -130,7 +129,7 @@ class PropertyServiceTest {
         when(propertyRepository.getById(property.getPropId())).thenReturn(property);
 
         // Act
-        PropertyWithoutRoomException exception = Assertions.assertThrows(
+        PropertyWithoutRoomException exception = assertThrows(
                 PropertyWithoutRoomException.class,
                 () -> service.getPropertyArea(property.getPropId()));
 
@@ -167,10 +166,11 @@ class PropertyServiceTest {
     void getLargestRoom_returnException_whenPropertyWithoutRoom() {
         // Arrange
         Property property = TestUtilsGenerator.getPropertyWithoutRoom();
+        property.setPropRooms(null);
         when(propertyRepository.getById(property.getPropId())).thenReturn(property);
 
         // Act
-        PropertyWithoutRoomException exception = Assertions.assertThrows(
+        PropertyWithoutRoomException exception = assertThrows(
                 PropertyWithoutRoomException.class,
                 () -> service.getLargestRoom(property.getPropId()));
 

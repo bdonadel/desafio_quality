@@ -1,6 +1,5 @@
 package com.betacampers.desafio_quality.repository;
 
-import com.betacampers.desafio_quality.exception.PropertyNotFoundException;
 import com.betacampers.desafio_quality.model.Property;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,9 +49,6 @@ public class PropertyRepository implements IPropertyRepository {
 
     @Override
     public Property getById(Long propertyId) {
-        if (!properties.containsKey(propertyId)) {
-            throw new PropertyNotFoundException(propertyId);
-        }
         return properties.get(propertyId);
     }
 

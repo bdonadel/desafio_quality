@@ -1,5 +1,7 @@
 package com.betacampers.desafio_quality.dto;
 
+import com.betacampers.desafio_quality.model.District;
+import com.betacampers.desafio_quality.model.Property;
 import com.betacampers.desafio_quality.model.Room;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,4 +31,8 @@ public class PropertyRequestDto {
 
     @NotEmpty(message = "A propriedade deve ter ao menos 1 cômodo.")
     private List<@Valid Room> propRooms;
+
+    public Property toProperty(District district) {
+        return new Property(getPropName(), district, getPropRooms());
+    }
 }
