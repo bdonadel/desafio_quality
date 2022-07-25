@@ -21,6 +21,6 @@ public class RoomResponseDto {
         roomName = room.getRoomName();
         roomWidth = room.getRoomWidth();
         roomLength = room.getRoomLength();
-        roomArea = roomWidth * roomLength;
+        roomArea = room.getRoomArea();
     }
 }
